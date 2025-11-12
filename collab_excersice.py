@@ -8,5 +8,6 @@ import sys
 import argparse
 
 
-def countingLetters(
+def countingLetters():
+    pass
    
