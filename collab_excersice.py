@@ -28,7 +28,7 @@ def input_validation (guess, word_list, guessed_words):
     
     """
     Validates a players guess in a word hunt game 
-    
+gt
     Parameters:
         guess(str): The word guessed by the user 
         word_list(set): The set of valid words for the current topic ot round.
