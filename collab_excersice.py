@@ -49,7 +49,8 @@ topicdict = {
 alphabetlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-#the lcd function will 
+#the lcd function will be worked out, this is just a draft of something that I 
+# think could work, but might be scrapped later on if we find a better way to do it
 def LCD():
     """
     Generates a Letter Common Denominator (LCD) set for a Word Hunt puzzle.
@@ -89,11 +90,11 @@ def LCD():
 
    
     
-    if difficulty == "1":       # Easy → most common letters
+    if difficulty == "1":       # Easy: most common letters
         pool = sorted_letters[:12]
-    elif difficulty == "3":     # Hard → least common letters
+    elif difficulty == "3":     # Hard: least common letters
         pool = sorted_letters[-12:]
-    else:                       # Medium → middle range
+    else:                       # Medium: middle range
         mid = len(sorted_letters) // 2
         pool = sorted_letters[mid-6 : mid+6]
 
