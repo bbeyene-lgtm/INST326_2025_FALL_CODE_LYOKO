@@ -1,12 +1,8 @@
-print("One Piece is the best anime ever!") #Aggrey
-print("Aric is a jerk (Joking, spare me)") #Lizandro 
-print("I love cats") #Johana
-print("lets skip this exam!!") #Beimnet
-
 import random
 from collections import Counter
 import sys
 import argparse
+import time
 
 
 
@@ -215,9 +211,44 @@ def grid_gen(words, rows=10, columns=10):
     fill_remaining_cells(grid, freq_counter)
     return grid
 
-        
-                
+def timer(choice):
+    """
+        This function acts as both a countdown before the User can input their 
+        guess, and to count how long it takes them to answer the theme word 
+        hunt. depending on time this will be affect their total score. 
 
-                
-        
-                    
+    Args:
+        choice (str): choice for the theme(difficulty) they choose in the game
+
+    Returns:
+        bonus (INT): returns the score with bonus (depending on difficulty).
+        time (INT): returns the time in secconds, how long it took to answer. 
+    """
+    gamepick = ""
+    while count_down > 0:
+        print(f"Count down from {count_down - 1}")
+        time.sleep(1)
+        count_down -= 1
+    if count_down == 1:
+        print("START!")
+        time.sleep(1)
+
+    if count_down == (0) and gamepick = choice:
+
+        time_start = time.time()
+        input_user = input(guess)
+        time_end = time.time()
+    
+        total_time = time_end - time_start
+    
+        if choice == 1:
+            bonus_1 = total_score
+            return (bonus_1, print(total_time))
+
+        elif choice == 2:
+            bonus_2 = total_score * 1.25
+            return (bonus_2, print(total_time))
+
+        else:
+            bonus_3 = total_score * 1.50
+            return (bonus_3, print(total_time))
