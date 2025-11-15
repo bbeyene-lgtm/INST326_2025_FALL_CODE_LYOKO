@@ -9,6 +9,7 @@ import sys
 import argparse
 
 
+
 #example topic not real
 plants = ["trees", "flowers", "shrubs", "herbs","tulips","roses","daisies","bushes"
           "ferns","mosses","cacti","vines","grasses","palms","sunflowers","lilies",
@@ -47,12 +48,75 @@ topicdict = {
 
 alphabetlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+#the lcd function will 
 def LCD():
-    print("Welcome to the word game!")
-    gamepick = input("Please pick a topic from the following list:\n"
-                     "1.plants\n"
-                     "2. animals\n")
-    guess = input("Using the space given enter your plant guesses: ")
+    """
+    Generates a Letter Common Denominator (LCD) set for a Word Hunt puzzle.
+    
+    The LCD algorithm chooses letters based on frequency within a topic-
+    specific word list. This ensures that:
+        - Easy mode → high-frequency letters → easier puzzle
+        - Hard mode → low-frequency letters → less common letters → harder puzzle
+    
+    The algorithm also allows words to be found reversed.
+    
+    Returns:
+        dict: Contains selected letters, topic, difficulty, and playable words.
+    """
+    
+    print("Welcome to word hunt!")
+    print("Choose a topic:\n1. Plants\n2. Animals\n3. Sports")
+    choice = input("> ")
+
+    topic_map = {"1": "plants", "2": "animals", "3": "sports"}
+    topic = topic_map.get(choice, "plants")
+    words = topicdict[topic]
+
+    # Ask for difficulty selection
+    print("\nDifficulty Levels:\n1. Easy\n2. Medium\n3. Hard")
+    difficulty = input("Pick Difficulty Level (1-3):")
+
+ 
+    letter_freq = {}
+    for word in words:
+        for letter in word.lower():
+            if letter.isalpha():
+                letter_freq[letter] = letter_freq.get(letter, 0) + 1
+
+    
+    sorted_letters = sorted(letter_freq.keys(), key=lambda x: letter_freq[x], reverse=True)
+
+   
+    
+    if difficulty == "1":       # Easy → most common letters
+        pool = sorted_letters[:12]
+    elif difficulty == "3":     # Hard → least common letters
+        pool = sorted_letters[-12:]
+    else:                       # Medium → middle range
+        mid = len(sorted_letters) // 2
+        pool = sorted_letters[mid-6 : mid+6]
+
+    # Choose 8 letters for the puzzle
+    selected_letters = random.sample(pool, 8)
+
+    print(f"\nYour topic: {topic.upper()}")
+    print("Your letters:", " ".join(selected_letters).upper())
+
+    playable = []
+    for w in words:
+        forward = all(letter in selected_letters for letter in w)
+        backward = all(letter in selected_letters for letter in w[::-1])
+
+        if forward or backward:
+            playable.append(w)
+
+    return {
+        "topic": topic,
+        "difficulty": difficulty,
+        "letters": selected_letters,
+        "words": playable
+    }
 
 def input_validation (guess, word_list, guessed_words):
     
