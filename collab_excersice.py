@@ -47,6 +47,39 @@ alphabetlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 
 #the lcd function will be worked out, this is just a draft of something that I 
 # think could work, but might be scrapped later on if we find a better way to do it
+
+class GameState:
+    """
+    Represents the state of a Word Hunt game.
+    Args: 
+        topic(str): The chosen topic for the game.
+        difficulty(str): The chosen difficulty level for the game.
+        guessed_words(set): A set of words that the player has already guessed.
+    Attributes:
+
+        score(int): The player's current score.
+        """
+    def __init__(self, topic, difficulty, word, score = 0):
+        self.topic = topic
+        self.difficulty = difficulty
+        self.word = word
+        self.guessed_words = set()
+        self.score = score
+        
+    def Topic(self,topic):
+        """
+        Tells user to pick a topic for the game.
+        Args:
+            topic (str): The chosen topic for the game.
+        """
+        topic = input("Choose a topic (plants, animals, sports): ")
+        if topic not in topicdict:
+            raise ValueError("Invalid topic. Please choose from plants, animals, or sports.")
+        self.topic = topic
+        print(f"You have chosen the topic: {topic}")
+        return topic
+        
+
 def LCD():
     """
     Generates a Letter Common Denominator (LCD) set for a Word Hunt puzzle.
@@ -93,20 +126,6 @@ def LCD():
     else:                       # Medium: middle range
         mid = len(sorted_letters) // 2
         pool = sorted_letters[mid-6 : mid+6]
-
-    # Choose 8 letters for the puzzle
-    selected_letters = random.sample(pool, 8)
-
-    print(f"\nYour topic: {topic.upper()}")
-    print("Your letters:", " ".join(selected_letters).upper())
-
-    playable = []
-    for w in words:
-        forward = all(letter in selected_letters for letter in w)
-        backward = all(letter in selected_letters for letter in w[::-1])
-
-        if forward or backward:
-            playable.append(w)
 
     return {
         "topic": topic,
@@ -233,7 +252,7 @@ def timer(choice):
         print("START!")
         time.sleep(1)
 
-    if count_down == (0) and gamepick = choice:
+    if count_down == (0) and gamepick == choice:
 
         time_start = time.time()
         input_user = input(guess)
