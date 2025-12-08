@@ -235,7 +235,7 @@ class GameState:
         return difficulty
 
 
-def timer(choice):
+def timer(self, difficulty):
     """
         This function acts as both a countdown before the User can input their 
         guess, and to count how long it takes them to answer the theme word 
@@ -263,22 +263,13 @@ def timer(choice):
             count_down -= 1
         print("Start!")
 
-        time_start = time.time()
-        input_user = input("Guess")
-        time_end = time.time()
-
-        total_score = len(input_user) * 10
-
-        total_time = time_end - time_start
-
-        if choice == 1:
-            bonus_1 = total_score
-            return (bonus_1, print(total_time))
-
-        elif choice == 2:
-            bonus_2 = total_score * 1.25
-            return (bonus_2, print(total_time))
-
+    time_start = time.time()
+    while True:   
+        input_user = input("Guess:")
+        if input_user.Upper() == "DONE":
+            break
         else:
-            bonus_3 = total_score * 1.50
-            return (bonus_3, print(total_time))
+            
+    time_end = time.time()
+    total_time = time_end - time_start
+
