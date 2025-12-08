@@ -92,7 +92,7 @@ class GameState:
         print(f"You have chosen the difficulty: {difficulty}")
         return difficulty
     
-c
+
         
 
 def LCD():
@@ -164,21 +164,21 @@ gt
         is_valid (bool): True is the guess is valid and new, False otherwise. 
         message(str): Explanation of the result
     """
-    
     if not isinstance(guess, str) or not guess.strip():
         return False, "Invalid input. Please enter a word,"
     
-    normalized_guess = guess.strip().lower 
-    
+    normalized_guess = guess.strip().lower()
+
     if normalized_guess in guessed_words: 
-        return False, f"You already guessed' '{normalized_guess}'. Try a new word."
-    
+        return False, f"You already guessed '{normalized_guess}'. Try a new word."
+
     if normalized_guess not in word_list: 
         return False, f"'{normalized_guess}' is not a valid word for this round."
-    
+
     guessed_words.add(normalized_guess)
-    
-    return True, f"Good job! '{normalized_guess}' is a valid word."  
+
+    return True, f"Good job! '{normalized_guess}' is a valid word."
+ 
 
 
 class Grid:
