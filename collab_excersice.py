@@ -73,11 +73,26 @@ class GameState:
             topic (str): The chosen topic for the game.
         """
         topic = input("Choose a topic (plants, animals, sports): ")
+        
         if topic not in topicdict:
             raise ValueError("Invalid topic. Please choose from plants, animals, or sports.")
-        self.topic = topic
+        topic = [x for x in topicdict if x == topic]
         print(f"You have chosen the topic: {topic}")
         return topic
+    def Difficulty(self):
+        """
+        Tells user to pick a difficulty for the game.
+        Args:
+            difficulty (str): The chosen difficulty level for the game.
+        """
+        difficulty = input("Choose a difficulty (easy, medium, hard): ")
+        if difficulty not in ["easy", "medium", "hard"]:
+            raise ValueError("Invalid difficulty. Please choose from easy, medium, or hard.")
+        self.difficulty = difficulty
+        print(f"You have chosen the difficulty: {difficulty}")
+        return difficulty
+    
+c
         
 
 def LCD():
