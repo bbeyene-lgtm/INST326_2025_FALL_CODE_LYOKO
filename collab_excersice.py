@@ -181,7 +181,7 @@ class Grid:
             for _ in range(100):
                 direction = random.choice(['horizontal', 'vertical'])
                 row = random.randint(0, self.rows - 1)
-                col = random.randint(0, self.cols - 1)
+                col = random.randint(0, self.columns - 1)
                 if self._can_place(word, row, col, direction):
                     self._place(word, row, col, direction)
                     self.words.append(word)
@@ -191,12 +191,25 @@ class Grid:
                 print(f"Could not place {word}")
     def _can_place(self, word, row, col, direction):
         if direction == 'horizontal':
-            if col + len(word) > self.cols: return False
-            return all(self.grid[row][col+i] in ('', word[i]) for i in range(len(word)))
+            if col + len(word) > self.columns:
+                return False
+        
+            for i in range(len(word)):
+                if self.grid[row][col + i] not in ('', word[i]):
+                    return False
+            return True
+
         if direction == 'vertical':
-            if row + len(word) > self.rows: return False
-            return all(self.grid[row+i][col] in ('', word[i]) for i in range(len(word)))
+            if row + len(word) > self.rows:
+                return False
+        
+        for i in range(len(word)):
+            if self.grid[row + i][col] not in ('', word[i]):
+                return False
+            return True
+
         return False
+
 
     def _place(self, word, row, col, direction):
         if direction == 'horizontal':
@@ -209,8 +222,8 @@ class Grid:
     def fill_random(self):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         for r in range(self.rows):
-            for c in range(self.cols):
-                if self.grid[r][c] == '':
+            for c in range(self.columns):
+                if self.grid[r][c] == ''    :
                     self.grid[r][c] = random.choice(alphabet)
 
     def display(self):
