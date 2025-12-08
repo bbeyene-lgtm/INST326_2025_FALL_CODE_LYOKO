@@ -140,8 +140,7 @@ class Grid:
         for row in self.grid:
             for letter in row:
                 print(letter, end=" ")
-            print()  
-
+            print()
 
 
 if __name__ == "__main__":
@@ -150,6 +149,7 @@ if __name__ == "__main__":
     game_grid.place_words(words)
     game_grid.fill_random()
     game_grid.display()
+
     def get_letters(words):
         letters = [letter.upper() for word in words for letter in word]
         return Counter(letters)
@@ -266,11 +266,11 @@ def timer(choice):
         time_start = time.time()
         input_user = input("Guess")
         time_end = time.time()
-        
+
         total_score = len(input_user) * 10
-    
+
         total_time = time_end - time_start
-    
+
         if choice == 1:
             bonus_1 = total_score
             return (bonus_1, print(total_time))
@@ -282,6 +282,3 @@ def timer(choice):
         else:
             bonus_3 = total_score * 1.50
             return (bonus_3, print(total_time))
-    
-
-
