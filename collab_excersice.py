@@ -181,9 +181,8 @@ if __name__ == "__main__":
                 break
         if not placed:
             print(f"Unable to place the word '{word}', try again.")
-
-    fill_remaining_cells(grid, freq_counter)
-    return grid
+        fill_remaining_cells(grid, freq_counter)
+        return grid
 
 
 class GameState:
