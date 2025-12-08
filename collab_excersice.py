@@ -181,9 +181,8 @@ if __name__ == "__main__":
                 break
         if not placed:
             print(f"Unable to place the word '{word}', try again.")
-
-    fill_remaining_cells(grid, freq_counter)
-    return grid
+        fill_remaining_cells(grid, freq_counter)
+        return grid
 
 
 class GameState:
@@ -264,12 +263,11 @@ def timer(self, difficulty):
         print("Start!")
 
     time_start = time.time()
-    while True:   
+    while True:
         input_user = input("Guess:")
         if input_user.Upper() == "DONE":
             break
         else:
-            
+
     time_end = time.time()
     total_time = time_end - time_start
-
