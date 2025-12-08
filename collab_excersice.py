@@ -7,7 +7,7 @@ import time
 
 
 #example topic not real
-plants = ["trees", "flowers", "shrubs", "herbs","tulips","roses","daisies","bushes"
+plants = ["trees", "flowers", "shrubs", "herbs","tulips","roses","daisies","bushes",
           "ferns","mosses","cacti","vines","grasses","palms","sunflowers","lilies",
           "orchids","daffodils","irises","marigolds","lavender", "jasmine","peonies",
           "begonias","chrysanthemums","hydrangeas","azaleas","camellias","gardenias","grasses",
@@ -153,7 +153,7 @@ gt
     if not isinstance(guess, str) or not guess.strip():
         return False, "Invalid input. Please enter a word,"
     
-    normalized_guess = guess.strip().lower 
+    normalized_guess = guess.strip().lower()
     
     if normalized_guess in guessed_words: 
         return False, f"You already guessed' '{normalized_guess}'. Try a new word."
@@ -167,6 +167,7 @@ gt
 
 
 class Grid:
+  
     def __init__(self,rows=10, columns=10):
         self.rows=rows
         self.columns=columns
@@ -203,9 +204,9 @@ class Grid:
             if row + len(word) > self.rows:
                 return False
         
-        for i in range(len(word)):
-            if self.grid[row + i][col] not in ('', word[i]):
-                return False
+            for i in range(len(word)):
+                if self.grid[row + i][col] not in ('', word[i]):
+                    return False
             return True
 
         return False
