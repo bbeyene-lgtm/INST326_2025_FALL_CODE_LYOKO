@@ -268,6 +268,5 @@ def timer(self, difficulty):
         if input_user.Upper() == "DONE":
             break
         else:
-
-    time_end = time.time()
-    total_time = time_end - time_start
+            time_end = time.time()
+            total_time = time_end - time_start
