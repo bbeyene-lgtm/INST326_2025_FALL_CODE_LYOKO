@@ -100,7 +100,7 @@ class Grid:
             if not placed:
                 print(f"Could not place {word}")
 
-    def _can_place(self, word, row, col, direction):
+    def word_placed(self, word, row, col, direction):
         if direction == 'horizontal':
             if col + len(word) > self.columns:
                 return False
@@ -158,25 +158,31 @@ def fill_remaining_cells(grid, freq_counter):
                 if grid[r][c] == '':
                     grid[r][c] = weighted_random_letter(freq_counter)
                     
-def empty_grid(words, rows = 10,columns = 10):
-        grid = empty_grid(rows, columns)
-        freq_counter = get_letters(words)
+def empty_grid(words, rows=10, columns=10):
+    
+    grid = [['' for _ in range(columns)] for _ in range(rows)]
+    freq_counter = get_letters(words)
 
-        for word in words:
-            word = word.upper()
-            placed = False
-            for _ in range(100):
-                direction = random.choice(['horizontal', 'vertical'])
-                row = random.randint(0, rows - 1)
-                col = random.randint(0, columns - 1)
-            if word_placed(grid, word, row, col, direction):
-                    place_word(grid, word, row, col, direction)
-                    placed = True
-                    break
-            if not placed:
-                print(f"Unable to place the word '{word}', try again.")
-                fill_remaining_cells(grid, freq_counter)
-        return grid
+    for word in words:
+        word = word.upper()
+        placed = False
+
+        for _ in range(100):
+            direction = random.choice(['horizontal', 'vertical'])
+            row = random.randint(0, rows - 1)
+            col = random.randint(0, columns - 1)
+
+            if word_placed(grid, word, row, col, direction):  
+                place_word(grid, word, row, col, direction)   
+                placed = True
+                break
+
+        if not placed:
+            print(f"Unable to place the word '{word}', try again.")
+
+    fill_remaining_cells(grid, freq_counter)
+    return grid
+
 
 
 class GameState:
