@@ -14,15 +14,14 @@ plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "
           "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
           "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"]
 
-animals = ["dog", "cat", "elephant", "tiger", "lion", "bear", "wolf", "fox",
-           "giraffe", "zebra", "kangaroo", "panda", "monkey", "rabbit", "deer",
-           "squirrel", "hedgehog", "otter", "raccoon", "badger", "beaver", "moose", "buffalo", "bison", "antelope", "cheetah", "leopard", "hyena", "jaguar",
-           "cougar", "lynx", "bobcat", "caracal", "ocelot", "tapir", "armadillo",
-           "sloth", "anteater", "porcupine", "wombat", "echidna", "platypus", "dingo",
-           "quokka", "quoll", "numbat", "bandicoot", "monkeypox", "lemur", "tarsier",
-           "marmoset", "capuchin", "howler", "spider monkey", "sakin", "uakari",
-           "colobus", "langur", "gibbon", "siamang", "orangutan", "chimpanze", "lizard",
-           "gecko", "iguana", "chameleon", "anole", "skink", "monitor", "python",]
+#example topic not real
+plants = ["trees", "flowers", "shrubs", "herbs","tulips","roses","daisies","bushes",
+          "ferns","mosses","cacti","vines","grasses","palms","sunflowers","lilies",
+          "orchids","daffodils","irises","marigolds","lavender", "jasmine","peonies",
+          "begonias","chrysanthemums","hydrangeas","azaleas","camellias","gardenias","grasses",
+          "bamboo","succulents","aloe vera","sage","thyme","rosemary","basil","mint","oregano",
+          "cilantro","parsley","dill","fennel","chives","lemongrass","tarragon","bay leaves",
+          "coriander","lavender","echinacea","ginseng","chamomile","valerian"]
 
 sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "rugby", "hockey", "volleyball", "badminton", "table tennis", "swimming",
@@ -78,7 +77,6 @@ def input_validation(guess, word_list, guessed_words):
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
 
-# counldn't figure out how to do it without just using one funtion (will be class)
 class Grid:
     def __init__(self, rows=10, columns=10):
         self.rows = rows
@@ -102,7 +100,7 @@ class Grid:
             if not placed:
                 print(f"Could not place {word}")
 
-    def _can_place(self, word, row, col, direction):
+    def word_placed(self, word, row, col, direction):
         if direction == 'horizontal':
             if col + len(word) > self.columns:
                 return False
@@ -121,7 +119,7 @@ class Grid:
 
         return False
 
-    def _place(self, word, row, col, direction):
+    def place_word(self, word, row, col, direction):
         if direction == 'horizontal':
             for i in range(len(word)):
                 self.grid[row][col+i] = word[i]
@@ -142,6 +140,7 @@ class Grid:
                 print(letter, end=" ")
             print()
 
+
 if __name__ == "__main__":
     words = ["lion", "tiger", "zebra", "bison"]  # example words
     game_grid = Grid(rows=10, columns=10)
@@ -153,35 +152,45 @@ if __name__ == "__main__":
         letters = [letter.upper() for word in words for letter in word]
         return Counter(letters)
 
-    def weighted_random_letter(freq_counter):
+def weighted_random_letter(freq_counter):
         pool = [letter for letter, count in freq_counter.items()
                 for _ in range(count)]
         return random.choice(pool)
 
-    def fill_remaining_cells(grid, freq_counter):
+def fill_remaining_cells(grid, freq_counter):
+        rows = len(grid)
+        columns = len(grid[0])
+        
         for r in range(rows):
             for c in range(columns):
                 if grid[r][c] == '':
                     grid[r][c] = weighted_random_letter(freq_counter)
-
-    grid = empty_grid(rows, columns)
+                    
+def empty_grid(words, rows=10, columns=10):
+    
+    grid = [['' for _ in range(columns)] for _ in range(rows)]
     freq_counter = get_letters(words)
 
     for word in words:
         word = word.upper()
         placed = False
+
         for _ in range(100):
             direction = random.choice(['horizontal', 'vertical'])
             row = random.randint(0, rows - 1)
             col = random.randint(0, columns - 1)
-            if word_placed(grid, word, row, col, direction):
-                place_word(grid, word, row, col, direction)
+
+            if word_placed(grid, word, row, col, direction):  
+                place_word(grid, word, row, col, direction)   
                 placed = True
                 break
+
         if not placed:
             print(f"Unable to place the word '{word}', try again.")
-        fill_remaining_cells(grid, freq_counter)
-        return grid
+
+    fill_remaining_cells(grid, freq_counter)
+    return grid
+
 
 
 class GameState:
