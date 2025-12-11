@@ -51,30 +51,41 @@ alphabetlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 # think could work, but might be scrapped later on if we find a better way to do it
 
 
+import random
+from collections import Counter
+
 class Grid:
+    """
+    A word‑search puzzle grid that supports placing words horizontally or vertically
+    and filling remaining cells with random letters.
+    """
+
     def __init__(self, rows=10, columns=10):
+        """
+        Initialize an empty grid.
+
+        Parameters:
+            rows (int): Number of rows in the grid.
+            columns (int): Number of columns in the grid.
+        """
         self.rows = rows
         self.columns = columns
         self.grid = [['' for _ in range(columns)] for _ in range(rows)]
         self.words = []
 
-    def place_words(self, words):
-        for word in words:
-            word = word.upper()
-            placed = False
-            for _ in range(100):
-                direction = random.choice(['horizontal', 'vertical'])
-                row = random.randint(0, self.rows - 1)
-                col = random.randint(0, self.columns - 1)
-                if self._can_place(word, row, col, direction):
-                    self._place(word, row, col, direction)
-                    self.words.append(word)
-                    placed = True
-                    break
-            if not placed:
-                print(f"Could not place {word}")
+    def _can_place(self, word, row, col, direction):
+        """
+        Check whether a word can be placed at a given position.
 
-    def word_placed(self, word, row, col, direction):
+        Parameters:
+            word (str): The word to place.
+            row (int): Starting row index.
+            col (int): Starting column index.
+            direction (str): 'horizontal' or 'vertical'.
+
+        Returns:
+            bool: True if placement is valid, otherwise False.
+        """
         if direction == 'horizontal':
             if col + len(word) > self.columns:
                 return False
@@ -93,26 +104,70 @@ class Grid:
 
         return False
 
-    def place_word(self, word, row, col, direction):
+    def _place(self, word, row, col, direction):
+        """
+        Place a word into the grid at a valid position.
+
+        Parameters:
+            word (str): The word to place.
+            row (int): Starting row index.
+            col (int): Starting column index.
+            direction (str): 'horizontal' or 'vertical'.
+        """
         if direction == 'horizontal':
             for i in range(len(word)):
-                self.grid[row][col+i] = word[i]
+                self.grid[row][col + i] = word[i]
         else:
             for i in range(len(word)):
-                self.grid[row+i][col] = word[i]
+                self.grid[row + i][col] = word[i]
+
+    def place_words(self, words):
+        """
+        Attempt to place a list of words into the grid.
+
+        Parameters:
+            words (list[str]): Words to place in the puzzle.
+        """
+        for word in words:
+            word = word.upper()
+            placed = False
+
+            for _ in range(100):
+                direction = random.choice(['horizontal', 'vertical'])
+                row = random.randint(0, self.rows - 1)
+                col = random.randint(0, self.columns - 1)
+
+                if self._can_place(word, row, col, direction):
+                    self._place(word, row, col, direction)
+                    self.words.append(word)
+                    placed = True
+                    break
+
+            if not placed:
+                print(f"Could not place {word}")
 
     def fill_random(self):
+        """
+        Fill all empty cells in the grid with random uppercase letters.
+        """
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         for r in range(self.rows):
             for c in range(self.columns):
                 if self.grid[r][c] == '':
                     self.grid[r][c] = random.choice(alphabet)
+       
 
     def display(self):
+        """
+        Print the grid to the console in a readable format.
+        """
         for row in self.grid:
             for letter in row:
                 print(letter, end=" ")
             print()
+
+
+
 
 def input_validation(guess, word_list, guessed_words):
     """
@@ -143,60 +198,6 @@ def input_validation(guess, word_list, guessed_words):
     guessed_words.add(normalized_guess)
 
     return True, f"Good job! '{normalized_guess}' is a valid word."
-
-
-
-if __name__ == "__main__":
-    words = ["lion", "tiger", "zebra", "bison"]  # example words
-    game_grid = Grid(rows=10, columns=10)
-    game_grid.place_words(words)
-    game_grid.fill_random()
-    game_grid.display()
-
-    def get_letters(words):
-        letters = [letter.upper() for word in words for letter in word]
-        return Counter(letters)
-
-def weighted_random_letter(freq_counter):
-        pool = [letter for letter, count in freq_counter.items()
-                for _ in range(count)]
-        return random.choice(pool)
-
-def fill_remaining_cells(grid, freq_counter):
-        rows = len(grid)
-        columns = len(grid[0])
-        
-        for r in range(rows):
-            for c in range(columns):
-                if grid[r][c] == '':
-                    grid[r][c] = weighted_random_letter(freq_counter)
-                    
-def empty_grid(words, rows=10, columns=10):
-    
-    grid = [['' for _ in range(columns)] for _ in range(rows)]
-    freq_counter = get_letters(words)
-
-    for word in words:
-        word = word.upper()
-        placed = False
-
-        for _ in range(100):
-            direction = random.choice(['horizontal', 'vertical'])
-            row = random.randint(0, rows - 1)
-            col = random.randint(0, columns - 1)
-
-            if word_placed(grid, word, row, col, direction):  
-                place_word(grid, word, row, col, direction)   
-                placed = True
-                break
-
-        if not placed:
-            print(f"Unable to place the word '{word}', try again.")
-
-    fill_remaining_cells(grid, freq_counter)
-    return grid
-
-
 
 class GameState:
     """
