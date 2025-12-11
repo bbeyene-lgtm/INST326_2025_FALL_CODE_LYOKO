@@ -211,16 +211,15 @@ class GameState:
         """
 
         choice = input(
-            "Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
+            "Choose a topic \n 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
 
         if choice == "1":
-            topic = "Sports: Easy"
+            topic = "sports"
         elif choice == "2":
-            topic = "Animals: Medium"
+            topic = "animals"
         elif choice == "3":
-            topic = "Plants: Hard"
+            topic = "plants"
         else:
-
             if topic not in topicdict:
                 raise ValueError(
                     "Invalid topic. Please choose from plants, animals, or sports.")
