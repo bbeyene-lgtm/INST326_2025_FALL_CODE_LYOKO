@@ -22,7 +22,7 @@ animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda",
            "parrot", "penguin", "flamingo", "peacock", "swan", "duck", "goose", "turkey",
             "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
             "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
-            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
+            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",    
             "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
 
 
@@ -245,10 +245,23 @@ class GameState:
         Returns:
             topic (str): The chosen topic for the game.
         """
-        topic = input("Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower()
+        
+        
+        choice  = input("Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
+        
+        
+        if choice == "1":
+                topic = "sports"
+        elif choice == "2":
+                topic = "animals"
+        elif choice == "3":
+                topic = "plants"
+        else:
 
-        if topic not in topicdict:
-            raise ValueError(
+
+
+            if topic not in topicdict:
+                raise ValueError(
                 "Invalid topic. Please choose from plants, animals, or sports.")
         self.topic = topic
         print(f"You have chosen the topic: {topic}")
