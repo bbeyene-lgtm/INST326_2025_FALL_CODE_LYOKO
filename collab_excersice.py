@@ -15,13 +15,18 @@ plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "
           "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"]
 
 #example topic not real
-plants = ["trees", "flowers", "shrubs", "herbs","tulips","roses","daisies","bushes",
-          "ferns","mosses","cacti","vines","grasses","palms","sunflowers","lilies",
-          "orchids","daffodils","irises","marigolds","lavender", "jasmine","peonies",
-          "begonias","chrysanthemums","hydrangeas","azaleas","camellias","gardenias","grasses",
-          "bamboo","succulents","aloe vera","sage","thyme","rosemary","basil","mint","oregano",
-          "cilantro","parsley","dill","fennel","chives","lemongrass","tarragon","bay leaves",
-          "coriander","lavender","echinacea","ginseng","chamomile","valerian"]
+animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
+           "wolf", "fox", "deer", "rabbit", "squirrel", "monkey", "gorilla", "chimpanzee",
+           "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
+           "snake", "lizard", "tortoise", "frog", "toad", "salmon", "trout", "shark",
+           "dolphin", "whale", "octopus", "squid", "jellyfish", "crab", "lobster", "shrimp",
+           "butterfly", "bee", "ant", "spider", "scorpion", "eagle", "hawk", "owl",
+           "parrot", "penguin", "flamingo", "peacock", "swan", "duck", "goose", "turkey",
+            "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
+            "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
+            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
+            "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
+
 
 sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "rugby", "hockey", "volleyball", "badminton", "table tennis", "swimming",
