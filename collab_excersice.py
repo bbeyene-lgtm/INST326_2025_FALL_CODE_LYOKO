@@ -5,15 +5,15 @@ import argparse
 import time
 
 
-plants = [word for word in ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
+plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
           "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
           "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
           "bamboo", "succulents", "aloe vera", "sage", "thyme", "rosemary", "basil", "mint", "oregano",
           "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
-          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"] if len(word) <= 10]
+          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"]
 
-animals = [word for word in ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
+animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
            "wolf", "fox", "deer", "rabbit", "squirrel", "monkey", "gorilla", "chimpanzee",
            "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
            "snake", "lizard", "tortoise", "frog", "toad", "salmon", "trout", "shark",
@@ -23,9 +23,10 @@ animals = [word for word in ["lion", "tiger", "elephant", "giraffe", "zebra", "k
            "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
            "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
-           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"] if len(word) <= 10]
+           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
 
-sports = [word for word in ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
+
+sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "rugby", "hockey", "volleyball", "badminton", "table tennis", "swimming",
           "cycling", "running", "boxing", "wrestling", "skiing", "snowboarding", "skateboarding",
           "surfing", "sailing", "rowing", "fishing", "archery", "fencing", "gymnastics",
@@ -33,7 +34,7 @@ sports = [word for word in ["soccer", "basketball", "baseball", "tennis", "golf"
           "karate", "judo", "taekwondo", "kickboxing", "mixed martial arts", "triathlon",
           "marathon", "ultramarathon", "hiking", "climbing", "caving", "orienteering",
           "parkour", "bouldering", "curling", "luge", "skeleton", "bobsledding",
-          "handball", "water polo", "synchronized swimming", "diving", "triathlon"] if len(word) <= 10]
+          "handball", "water polo", "synchronized swimming", "diving", "triathlon",]
 
 topicdict = {
     "plants": plants,
@@ -177,7 +178,7 @@ class GameState:
         self.player_name = None  # game name to be added later
         self.topic = topic
         self.difficulty = difficulty
-        self.word = []
+        self.word = word
         self.guessed_words = set()
         self.score = score
 
@@ -292,7 +293,7 @@ def input_validation(guess, word_list, guessed_words):
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
 
-def timer():
+def timer(guess):
     """
         This function acts as both a countdown before the User can input their 
         guess, and to count how long it takes them to answer the theme word 
@@ -308,10 +309,12 @@ def timer():
 
     time_start = time.time()
     while True:
-        if input_user.upper() == "DONE":
+        if guess.upper() == "END":
             break
     time_end = time.time()
     total_time = time_end - time_start
+    return total_time
+
 
 
 def main():
@@ -320,10 +323,11 @@ def main():
     name = game.set_player_name()
     topic = game.Topic()
     game.countdown()
-    display = Grid(rows=10, columns=10)
+    display = Grid()
     display.place_words(game.word)
     display.fill_random()
     display.display()
+    print("Type 'End' to Quit")
     
 
 
