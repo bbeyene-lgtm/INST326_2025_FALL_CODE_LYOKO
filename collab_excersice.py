@@ -327,8 +327,6 @@ def main():
     display.place_words(game.word)
     display.fill_random()
     display.display()
-    print("Type 'End' to Quit")
-    
 
 
 if __name__ == "__main__":
