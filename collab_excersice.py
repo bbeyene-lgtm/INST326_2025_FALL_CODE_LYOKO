@@ -5,28 +5,27 @@ import argparse
 import time
 
 
-plants= ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
+plants = [word for word in ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
           "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
           "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
           "bamboo", "succulents", "aloe vera", "sage", "thyme", "rosemary", "basil", "mint", "oregano",
           "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
-          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"]
+          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"] if len(word) <= 10]
 
-animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
+animals = [word for word in ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
            "wolf", "fox", "deer", "rabbit", "squirrel", "monkey", "gorilla", "chimpanzee",
            "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
            "snake", "lizard", "tortoise", "frog", "toad", "salmon", "trout", "shark",
            "dolphin", "whale", "octopus", "squid", "jellyfish", "crab", "lobster", "shrimp",
            "butterfly", "bee", "ant", "spider", "scorpion", "eagle", "hawk", "owl",
            "parrot", "penguin", "flamingo", "peacock", "swan", "duck", "goose", "turkey",
-            "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
-            "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
-            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
-            "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
+           "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
+           "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
+           "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
+           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"] if len(word) <= 10]
 
-
-sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
+sports = [word for word in ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "rugby", "hockey", "volleyball", "badminton", "table tennis", "swimming",
           "cycling", "running", "boxing", "wrestling", "skiing", "snowboarding", "skateboarding",
           "surfing", "sailing", "rowing", "fishing", "archery", "fencing", "gymnastics",
@@ -34,7 +33,7 @@ sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "karate", "judo", "taekwondo", "kickboxing", "mixed martial arts", "triathlon",
           "marathon", "ultramarathon", "hiking", "climbing", "caving", "orienteering",
           "parkour", "bouldering", "curling", "luge", "skeleton", "bobsledding",
-          "handball", "water polo", "synchronized swimming", "diving", "triathlon",]
+          "handball", "water polo", "synchronized swimming", "diving", "triathlon"] if len(word) <= 10]
 
 topicdict = {
     "plants": plants,
@@ -208,7 +207,7 @@ class GameState:
     def __init__(self, topic, difficulty, word, score=0):
         self.topic = topic
         self.difficulty = difficulty
-        self.word = word
+        self.word = []
         self.guessed_words = set()
         self.score = score
 
@@ -270,11 +269,72 @@ def timer(self, difficulty):
             count_down -= 1
         print("Start!")
 
+
+def input_validation(guess, word_list, guessed_words):
+    """
+    Validates a players guess in a word hunt game 
+
+    Parameters:
+        guess(str): The word guessed by the user 
+        word_list(set): The set of valid words for the current topic ot round.
+        guessed_words(set): The set of words th= game has already guessed 
+
+    Returns: 
+        tuple: (is_valid, message)[].
+        is_valid (bool): True is the guess is valid and new, False otherwise. 
+        message(str): Explanation of the result
+    """
+
+    if not isinstance(guess, str) or not guess.strip():
+        return False, "Invalid input. Please enter a word,"
+
+    normalized_guess = guess.strip().lower()
+
+    if normalized_guess in guessed_words:
+        return False, f"You already guessed' '{normalized_guess}'. Try a new word."
+
+    if normalized_guess not in word_list:
+        return False, f"'{normalized_guess}' is not a valid word for this round."
+
+    guessed_words.add(normalized_guess)
+
+    return True, f"Good job! '{normalized_guess}' is a valid word."
+
+
+def timer():
+    """
+        This function acts as both a countdown before the User can input their 
+        guess, and to count how long it takes them to answer the theme word 
+        hunt. depending on time this will be affect their total score. 
+
+    Args:
+        choice (str): choice for the theme(difficulty) they choose in the game
+
+    Returns:
+        bonus (INT): returns the score with bonus (depending on difficulty).
+        time (INT): returns the time in secconds, how long it took to answer. 
+    """
+
     time_start = time.time()
     while True:
-        input_user = input("Guess:")
         if input_user.upper() == "DONE":
             break
-        else:
-            time_end = time.time()
-            total_time = time_end - time_start
+    time_end = time.time()
+    total_time = time_end - time_start
+
+
+def main():
+
+    game = GameState()
+    name = game.set_player_name()
+    topic = game.Topic()
+    game.countdown()
+    display = Grid(rows=10, columns=10)
+    display.place_words(game.word)
+    display.fill_random()
+    display.display()
+    
+
+
+if __name__ == "__main__":
+    main()
