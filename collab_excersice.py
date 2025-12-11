@@ -5,7 +5,6 @@ import argparse
 import time
 
 
-# example topic not real
 plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes"
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
           "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
@@ -14,7 +13,6 @@ plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "
           "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
           "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"]
 
-#example topic not real
 animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
            "wolf", "fox", "deer", "rabbit", "squirrel", "monkey", "gorilla", "chimpanzee",
            "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
