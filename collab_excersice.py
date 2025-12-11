@@ -22,7 +22,7 @@ animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda",
            "parrot", "penguin", "flamingo", "peacock", "swan", "duck", "goose", "turkey",
             "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
             "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
-            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
+            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",    
             "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
 
 
@@ -201,47 +201,75 @@ class GameState:
     Args: 
         topic(str): The chosen topic for the game.
         difficulty(str): The chosen difficulty level for the game.
-        guessed_words(set): A set of words that the player has already guessed.
-    Attributes:
-
+        words(str): The word to be guessed in the game.
         score(int): The player's current score.
+    Attributes:
+        guessed_words(set): A set of words that the player has already guessed.
+        player_name(str): The name of the player.
         """
 
-    def __init__(self, topic, difficulty, word, score=0):
+    def __init__(self, topic = None , difficulty = None, word = None, score=0):
+        self.player_name = None  #player name to be added later
         self.topic = topic
         self.difficulty = difficulty
         self.word = word
         self.guessed_words = set()
         self.score = score
+    
+    def set_player_name(self):
+        """
+        Prompts the user to enter their name and sets it as the player_name attribute.
+        
+        Returns:
+            str: the player's name
+        """
+        while True:
+            name = input("Enter your name: ").strip()
+            if name:
+                self.player_name = name
+                print(f"Welcome, {self.player_name}!")
+                return self.player_name
+            else:
+                print("Name cannot be empty. Please enter a valid name.")
+        
+    
 
     def Topic(self, topic):
         """
-        Tells user to pick a topic for the game.
+        Tells user to pick a topic for the game, and the topic and difficulty
+        are intertwined. so sports is easy, animals is medium and plants is hard.
         Args:
             topic (str): The chosen topic for the game.
+        Raises:
+            ValueError: If the topic is not one of the valid options.
+        Returns:
+            topic (str): The chosen topic for the game.
         """
-        topic = input("Choose a topic (plants, animals, sports): ")
+        
+        
+        choice  = input("Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
+        
+        
+        if choice == "1":
+                topic = "sports"
+        elif choice == "2":
+                topic = "animals"
+        elif choice == "3":
+                topic = "plants"
+        else:
 
-        if topic not in topicdict:
-            raise ValueError(
+
+
+            if topic not in topicdict:
+                raise ValueError(
                 "Invalid topic. Please choose from plants, animals, or sports.")
-        topic = [x for x in topicdict if x == topic]
+        self.topic = topic
         print(f"You have chosen the topic: {topic}")
+        
+        #going to do the random subset of words for the topic that they pick
+        num_words = {"plants": 5, "animals": 4, "sports": 3} #number of words depending on topic
+        self.word = random.sample(topicdict[topic], min(num_words[topic], len(topicdict[topic])))
         return topic
-
-    def Difficulty(self):
-        """
-        Tells user to pick a difficulty for the game.
-        Args:
-            difficulty (str): The chosen difficulty level for the game.
-        """
-        difficulty = input("Choose a difficulty (easy, medium, hard): ")
-        if difficulty not in ["easy", "medium", "hard"]:
-            raise ValueError(
-                "Invalid difficulty. Please choose from easy, medium, or hard.")
-        self.difficulty = difficulty
-        print(f"You have chosen the difficulty: {difficulty}")
-        return difficulty
 
 
 def timer(self, difficulty):
