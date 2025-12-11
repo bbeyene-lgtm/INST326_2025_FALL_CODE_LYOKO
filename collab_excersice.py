@@ -197,8 +197,10 @@ class GameState:
                 return self.player_name
             else:
                 print("Name cannot be empty. Please enter a valid name.")
+        
+    
 
-    def Topic(self, topic):
+    def Topic(self):
         """
         Tells user to pick a topic for the game, and the topic and difficulty
         are intertwined. so sports is easy, animals is medium and plants is hard.
@@ -214,11 +216,11 @@ class GameState:
             "Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
 
         if choice == "1":
-            topic = "sports"
+                topic = "Sports: Easy"
         elif choice == "2":
-            topic = "animals"
+                topic = "Animals: Medium"
         elif choice == "3":
-            topic = "plants"
+                topic = "Plants: Hard"
         else:
 
             if topic not in topicdict:
