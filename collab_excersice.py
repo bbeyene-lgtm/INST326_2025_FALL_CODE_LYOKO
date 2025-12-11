@@ -265,14 +265,6 @@ class GameState:
             print("Start!")
 
 
-"""    time_start = time.time()
-    while True:
-        input_user = input("Guess:")
-        if input_user.upper() == "DONE":
-            break
-        else: 
-            time_end = time.time()
-    total_time = time_end - time_start"""
 
 
 def input_validation(guess, word_list, guessed_words):
