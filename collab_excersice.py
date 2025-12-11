@@ -309,3 +309,4 @@ def timer(self, difficulty):
             time_end = time.time()
             total_time = time_end - time_start
             
+ 
