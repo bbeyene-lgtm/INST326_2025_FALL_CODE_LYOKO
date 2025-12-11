@@ -326,5 +326,6 @@ def main():
     topic = game.Topic()
     game.countdown()
 
+
 if __name__ == "__main__":
     main()
