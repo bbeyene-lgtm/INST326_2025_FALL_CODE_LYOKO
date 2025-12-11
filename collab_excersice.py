@@ -51,8 +51,6 @@ alphabetlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 # think could work, but might be scrapped later on if we find a better way to do it
 
 
-import random
-from collections import Counter
 
 class Grid:
     """
