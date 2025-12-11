@@ -197,8 +197,6 @@ class GameState:
                 return self.player_name
             else:
                 print("Name cannot be empty. Please enter a valid name.")
-        
-    
 
     def Topic(self):
         """
@@ -216,11 +214,11 @@ class GameState:
             "Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
 
         if choice == "1":
-                topic = "Sports: Easy"
+            topic = "Sports: Easy"
         elif choice == "2":
-                topic = "Animals: Medium"
+            topic = "Animals: Medium"
         elif choice == "3":
-                topic = "Plants: Hard"
+            topic = "Plants: Hard"
         else:
 
             if topic not in topicdict:
@@ -265,8 +263,6 @@ class GameState:
             print("Start!")
 
 
-
-
 def input_validation(guess, word_list, guessed_words):
     """
     Validates a players guess in a word hunt game 
@@ -298,7 +294,7 @@ def input_validation(guess, word_list, guessed_words):
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
 
-def timer(input):
+def timer():
     """
         This function acts as both a countdown before the User can input their 
         guess, and to count how long it takes them to answer the theme word 
@@ -321,10 +317,13 @@ def timer(input):
 
 
 def main():
+
     game = GameState()
     name = game.set_player_name()
     topic = game.Topic()
-    game.countdown
+    game.countdown()
+    Grid.display()
+
 
 if __name__ == "__main__":
     main()
