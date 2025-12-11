@@ -234,7 +234,7 @@ class GameState:
         
     
 
-    def Topic(self, topic):
+    def Topic(self):
         """
         Tells user to pick a topic for the game, and the topic and difficulty
         are intertwined. so sports is easy, animals is medium and plants is hard.
