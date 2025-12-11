@@ -251,11 +251,11 @@ class GameState:
         
         
         if choice == "1":
-                topic = "sports"
+                topic = "Sports: Easy"
         elif choice == "2":
-                topic = "animals"
+                topic = "Animals: Medium"
         elif choice == "3":
-                topic = "plants"
+                topic = "Plants: Hard"
         else:
 
 
