@@ -5,7 +5,7 @@ import argparse
 import time
 
 
-plants= ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
+plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
           "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
           "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
@@ -20,10 +20,10 @@ animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda",
            "dolphin", "whale", "octopus", "squid", "jellyfish", "crab", "lobster", "shrimp",
            "butterfly", "bee", "ant", "spider", "scorpion", "eagle", "hawk", "owl",
            "parrot", "penguin", "flamingo", "peacock", "swan", "duck", "goose", "turkey",
-            "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
-            "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
-            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",    
-            "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
+           "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
+           "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
+           "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
+           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
 
 
 sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
@@ -47,7 +47,6 @@ alphabetlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 
 # the lcd function will be worked out, this is just a draft of something that I
 # think could work, but might be scrapped later on if we find a better way to do it
-
 
 
 class Grid:
@@ -151,7 +150,6 @@ class Grid:
             for c in range(self.columns):
                 if self.grid[r][c] == '':
                     self.grid[r][c] = random.choice(alphabet)
-       
 
     def display(self):
         """
@@ -163,6 +161,116 @@ class Grid:
             print()
 
 
+class GameState:
+    """
+    Represents the state of a Word Hunt game.
+    Args: 
+        topic(str): The chosen topic for the game.
+        difficulty(str): The chosen difficulty level for the game.
+        words(str): The word to be guessed in the game.
+        score(int): Th= game's current score.
+    Attributes:
+        guessed_words(set): A set of words that th= game has already guessed.
+        player_name(str): The name of th= game.
+        """
+
+    def __init__(self, topic=None, difficulty=None, word=None, score=0):
+        self.player_name = None  # game name to be added later
+        self.topic = topic
+        self.difficulty = difficulty
+        self.word = word
+        self.guessed_words = set()
+        self.score = score
+
+    def set_player_name(self):
+        """
+        Prompts the user to enter their name and sets it as the player_name attribute.
+
+        Returns:
+            str: th= game's name
+        """
+        while True:
+            name = input("Enter your name: ").strip()
+            if name:
+                self.player_name = name
+                print(f"Welcome, {self.player_name}!")
+                return self.player_name
+            else:
+                print("Name cannot be empty. Please enter a valid name.")
+
+    def Topic(self, topic):
+        """
+        Tells user to pick a topic for the game, and the topic and difficulty
+        are intertwined. so sports is easy, animals is medium and plants is hard.
+        Args:
+            topic (str): The chosen topic for the game.
+        Raises:
+            ValueError: If the topic is not one of the valid options.
+        Returns:
+            topic (str): The chosen topic for the game.
+        """
+
+        choice = input(
+            "Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
+
+        if choice == "1":
+            topic = "sports"
+        elif choice == "2":
+            topic = "animals"
+        elif choice == "3":
+            topic = "plants"
+        else:
+
+            if topic not in topicdict:
+                raise ValueError(
+                    "Invalid topic. Please choose from plants, animals, or sports.")
+        self.topic = topic
+        print(f"You have chosen the topic: {topic}")
+
+        # going to do the random subset of words for the topic that they pick
+        # number of words depending on topic
+        num_words = {"plants": 5, "animals": 4, "sports": 3}
+        self.word = random.sample(topicdict[topic], min(
+            num_words[topic], len(topicdict[topic])))
+        return topic
+
+    def countdown(self):
+        """
+        This function acts as both a countdown before the User can input their 
+        guess, and to count how long it takes them to answer the theme word 
+        hunt. depending on time this will be affect their total score. 
+
+    Args:
+        choice (str): choice for the theme(difficulty) they choose in the game
+
+    Returns:
+        bonus (INT): returns the score with bonus (depending on difficulty).
+        time (INT): returns the time in secconds, how long it took to answer. 
+    """
+        while True:
+            print("Are You Ready? (Y/N)")
+            answer = input(">> ")
+            if answer.upper() == "Y":
+                break
+        start = True
+
+        if start is True:
+            count_down = 3
+            while count_down > 0:
+                print(f"Count down from {count_down}")
+                time.sleep(1)
+                count_down -= 1
+            print("Start!")
+
+
+"""    time_start = time.time()
+    while True:
+        input_user = input("Guess:")
+        if input_user.upper() == "DONE":
+            break
+        else: 
+            time_end = time.time()
+    total_time = time_end - time_start"""
 
 
 def input_validation(guess, word_list, guessed_words):
@@ -172,7 +280,7 @@ def input_validation(guess, word_list, guessed_words):
     Parameters:
         guess(str): The word guessed by the user 
         word_list(set): The set of valid words for the current topic ot round.
-        guessed_words(set): The set of words the player has already guessed 
+        guessed_words(set): The set of words th= game has already guessed 
 
     Returns: 
         tuple: (is_valid, message)[].
@@ -195,84 +303,8 @@ def input_validation(guess, word_list, guessed_words):
 
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
-class GameState:
-    """
-    Represents the state of a Word Hunt game.
-    Args: 
-        topic(str): The chosen topic for the game.
-        difficulty(str): The chosen difficulty level for the game.
-        words(str): The word to be guessed in the game.
-        score(int): The player's current score.
-    Attributes:
-        guessed_words(set): A set of words that the player has already guessed.
-        player_name(str): The name of the player.
-        """
 
-    def __init__(self, topic = None , difficulty = None, word = None, score=0):
-        self.player_name = None  #player name to be added later
-        self.topic = topic
-        self.difficulty = difficulty
-        self.word = word
-        self.guessed_words = set()
-        self.score = score
-    
-    def set_player_name(self):
-        """
-        Prompts the user to enter their name and sets it as the player_name attribute.
-        
-        Returns:
-            str: the player's name
-        """
-        while True:
-            name = input("Enter your name: ").strip()
-            if name:
-                self.player_name = name
-                print(f"Welcome, {self.player_name}!")
-                return self.player_name
-            else:
-                print("Name cannot be empty. Please enter a valid name.")
-        
-    
-
-    def Topic(self, topic):
-        """
-        Tells user to pick a topic for the game, and the topic and difficulty
-        are intertwined. so sports is easy, animals is medium and plants is hard.
-        Args:
-            topic (str): The chosen topic for the game.
-        Raises:
-            ValueError: If the topic is not one of the valid options.
-        Returns:
-            topic (str): The chosen topic for the game.
-        """
-        
-        
-        choice  = input("Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
-        
-        
-        if choice == "1":
-                topic = "sports"
-        elif choice == "2":
-                topic = "animals"
-        elif choice == "3":
-                topic = "plants"
-        else:
-
-
-
-            if topic not in topicdict:
-                raise ValueError(
-                "Invalid topic. Please choose from plants, animals, or sports.")
-        self.topic = topic
-        print(f"You have chosen the topic: {topic}")
-        
-        #going to do the random subset of words for the topic that they pick
-        num_words = {"plants": 5, "animals": 4, "sports": 3} #number of words depending on topic
-        self.word = random.sample(topicdict[topic], min(num_words[topic], len(topicdict[topic])))
-        return topic
-
-
-def timer(self, difficulty):
+def timer(input):
     """
         This function acts as both a countdown before the User can input their 
         guess, and to count how long it takes them to answer the theme word 
@@ -285,27 +317,17 @@ def timer(self, difficulty):
         bonus (INT): returns the score with bonus (depending on difficulty).
         time (INT): returns the time in secconds, how long it took to answer. 
     """
-    while True:
-        print("Are You Ready? (Y/N)")
-        answer = input(">> ")
-        if answer.upper() == "Y":
-            break
-    start = True
-
-    if start is True:
-        count_down = 3
-        while count_down > 0:
-            print(f"Count down from {count_down}")
-            time.sleep(1)
-            count_down -= 1
-        print("Start!")
 
     time_start = time.time()
     while True:
-        input_user = input("Guess:")
         if input_user.upper() == "DONE":
             break
-        else:
-            time_end = time.time()
-            total_time = time_end - time_start
+    time_end = time.time()
+    total_time = time_end - time_start
 
+
+def main():
+    game = GameState()
+    name = game.set_player_name()
+    topic = game.topic()
+    game.countdown
