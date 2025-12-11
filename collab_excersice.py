@@ -278,4 +278,3 @@ def timer(self, difficulty):
         else:
             time_end = time.time()
             total_time = time_end - time_start
-
