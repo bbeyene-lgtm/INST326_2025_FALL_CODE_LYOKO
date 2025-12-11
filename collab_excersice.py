@@ -331,5 +331,8 @@ def timer(input):
 def main():
     game = GameState()
     name = game.set_player_name()
-    topic = game.topic()
+    topic = game.Topic()
     game.countdown
+
+if __name__ == "__main__":
+    main()
