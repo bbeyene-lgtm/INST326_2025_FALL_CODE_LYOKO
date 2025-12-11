@@ -325,6 +325,10 @@ def main():
     name = game.set_player_name()
     topic = game.Topic()
     game.countdown()
+    display = Grid()
+    display.place_words(game.word)
+    display.fill_random()
+    display.display()
 
 
 if __name__ == "__main__":
