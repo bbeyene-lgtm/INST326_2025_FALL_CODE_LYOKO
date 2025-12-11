@@ -316,7 +316,6 @@ def timer(guess):
     return total_time
 
 
-
 def main():
 
     game = GameState()
@@ -327,6 +326,13 @@ def main():
     display.place_words(game.word)
     display.fill_random()
     display.display()
+    print("Type 'done' to quit")
+    game_list = {game.word}
+    input_list = {}
+    while True:
+        if game_list != input_list
+            guess = input("Guess: ")
+    
 
 
 if __name__ == "__main__":
