@@ -213,7 +213,7 @@ class GameState:
         """
 
         choice = input(
-            "Choose a topic 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
+            "Choose a topic \n 1. Sports: Easy \n 2. Animals: Medium \n 3. Plants: Hard\n").lower().strip()
 
         if choice == "1":
                 topic = "sports"
@@ -324,7 +324,7 @@ def main():
     game = GameState()
     name = game.set_player_name()
     topic = game.Topic()
-    game.countdown
+    game.countdown()
 
 if __name__ == "__main__":
     main()
