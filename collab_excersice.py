@@ -5,7 +5,7 @@ import argparse
 import time
 
 
-plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes"
+lants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes"
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
           "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
           "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
