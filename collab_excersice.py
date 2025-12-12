@@ -322,18 +322,31 @@ def main():
     name = game.set_player_name()
     topic = game.Topic()
     game.countdown()
+    
     display = Grid()
     display.place_words(game.word)
     display.fill_random()
     display.display()
     print("Type 'done' to quit")
-    game_list = {game.word}
-    input_list = {}
-    while True:
-        if game_list != input_list
-            guess = input("Guess: ")
     
+    game_list = set(w.lower() for w in game.word)
 
+    input_list = set()
+    
+    while True:
+        if game_list != input_list:
+            guess = input("Guess: ").strip().lower()
+            
+        if guess == "done":
+            print ("Well Done")
+            break 
+    
+    is_valid, message = input_validation (guess, game_list, input_list)
+    print(message)
+    
+    if is_valid: 
+        input_list.add(guess)
+    
 
 if __name__ == "__main__":
     main()
