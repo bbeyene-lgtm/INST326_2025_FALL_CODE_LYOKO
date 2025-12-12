@@ -5,36 +5,35 @@ import argparse
 import time
 
 
-
 plants = [word for word in ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
-          "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
-          "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
-          "bamboo", "succulents", "aloe vera", "sage", "thyme", "rosemary", "basil", "mint", "oregano",
-          "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
-          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"] if len(word) <= 10]
+                            "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
+                            "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
+                            "bamboo", "succulents", "aloe vera", "sage", "thyme", "rosemary", "basil", "mint", "oregano",
+                            "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
+                            "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"] if len(word) <= 10]
 
 animals = [word for word in ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
            "wolf", "fox", "deer", "rabbit", "squirrel", "monkey", "gorilla", "chimpanzee",
-           "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
-           "snake", "lizard", "tortoise", "frog", "toad", "salmon", "trout", "shark",
-           "dolphin", "whale", "octopus", "squid", "jellyfish", "crab", "lobster", "shrimp",
-           "butterfly", "bee", "ant", "spider", "scorpion", "eagle", "hawk", "owl",
-           "parrot", "penguin", "flamingo", "peacock", "swan", "duck", "goose", "turkey",
-           "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
-           "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
-           "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
-           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"] if len(word) <= 10]
+                             "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
+                             "snake", "lizard", "tortoise", "frog", "toad", "salmon", "trout", "shark",
+                             "dolphin", "whale", "octopus", "squid", "jellyfish", "crab", "lobster", "shrimp",
+                             "butterfly", "bee", "ant", "spider", "scorpion", "eagle", "hawk", "owl",
+                             "parrot", "penguin", "flamingo", "peacock", "swan", "duck", "goose", "turkey",
+                             "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
+                             "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
+                             "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
+                             "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"] if len(word) <= 10]
 
 sports = [word for word in ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "rugby", "hockey", "volleyball", "badminton", "table tennis", "swimming",
-          "cycling", "running", "boxing", "wrestling", "skiing", "snowboarding", "skateboarding",
-          "surfing", "sailing", "rowing", "fishing", "archery", "fencing", "gymnastics",
-          "weightlifting", "yoga", "pilates", "aerobics", "dance", "cheerleading",
-          "karate", "judo", "taekwondo", "kickboxing", "mixed martial arts", "triathlon",
-          "marathon", "ultramarathon", "hiking", "climbing", "caving", "orienteering",
-          "parkour", "bouldering", "curling", "luge", "skeleton", "bobsledding",
-          "handball", "water polo", "synchronized swimming", "diving", "triathlon"] if len(word) <= 10]
+                            "cycling", "running", "boxing", "wrestling", "skiing", "snowboarding", "skateboarding",
+                            "surfing", "sailing", "rowing", "fishing", "archery", "fencing", "gymnastics",
+                            "weightlifting", "yoga", "pilates", "aerobics", "dance", "cheerleading",
+                            "karate", "judo", "taekwondo", "kickboxing", "mixed martial arts", "triathlon",
+                            "marathon", "ultramarathon", "hiking", "climbing", "caving", "orienteering",
+                            "parkour", "bouldering", "curling", "luge", "skeleton", "bobsledding",
+                            "handball", "water polo", "synchronized swimming", "diving", "triathlon"] if len(word) <= 10]
 
 
 topicdict = {
@@ -171,7 +170,7 @@ class GameState:
         words(str): The word to be guessed in the game.
         score(int): Th= game's current score.
     Attributes:
-        guessed_words(set): A set of words that th= game has already guessed.
+        correct_words(set): A set of words that th= game has already guessed.
         player_name(str): The name of th= game.
         """
 
@@ -180,7 +179,7 @@ class GameState:
         self.topic = topic
         self.difficulty = difficulty
         self.word = word
-        self.guessed_words = set()
+        self.correct_words = set()
         self.score = score
 
     def set_player_name(self):
@@ -233,7 +232,8 @@ class GameState:
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
-    def score(self, word):
+
+    def update_score(self, guess):
         """
         Calculates the score based on the word length and difficulty.
         Args:
@@ -242,18 +242,19 @@ class GameState:
             Updates the game's score based on the word length and difficulty.
 
         """
-        basepoints = len(word) * 10
-        diffmult = {"easy": 1, "medium": 1.5, "hard": 2.0}
-        
-        if self.topic == "sports":
-            hi = "easy"
-        elif self.topic == "animals":
-            hi = "medium"
-        elif self.topic == "plants":
-            hi = "hard"
-        points = int(basepoints * diffmult[hi])
-        self.score += points
-        print(f"+{points} points! Score is now {self.score}")
+        if isinstance(guess, str):
+            basepoints = 1000
+            diffmult = {"easy": 1, "medium": 1.5, "hard": 2.0}
+
+            if self.topic == "sports":
+                hi = "easy"
+            elif self.topic == "animals":
+                hi = "medium"
+            elif self.topic == "plants":
+                hi = "hard"
+            points = int(basepoints * diffmult[hi])
+            self.score += points
+            print(f"+{points} points! Score is now {self.score}")
 
     def countdown(self):
         """
@@ -282,61 +283,62 @@ class GameState:
                 time.sleep(1)
                 count_down -= 1
             print("Start!")
-    def endgame(self):
+
+    def endgame(self, input_list):
         """
         End the game and display final statistics including player name, 
         topic, words found, score, and time taken.
-        
+
         INTEGRATION: Call this when player types "DONE" or all words are found
         """
-        self.end_time = time.time()
-        total_time = self.end_time
-        
+
         print("GAME OVER!")
         print(f"Player: {self.player_name}")
         print(f"Topic: {self.topic.upper()}")
-        print(f"Words found: {len(self.guessed_words)}/{len(self.word)}")
+        print(f"Words found: {len(input_list)}/{len(self.word)}")
         print(f"Final score: {self.score}")
-        print(f"Time taken: {total_time:.2f} seconds")
-        
+
         # Show which words were found
-        if self.guessed_words:
-            print(f"\nWords you found: {', '.join(sorted(self.guessed_words))}")
-        
+        if self.correct_words:
+            print(
+                f"\nWords you found: {', '.join(sorted(self.correct_words))}")
+
         # Show words that were missed
-        missed_words = set([w.lower() for w in self.word]) - self.guessed_words
+        set1 = set([w.lower() for w in self.word])
+        set2 = self.correct_words
+        missed_words = set1.difference(set2)
         if missed_words:
-            print(f"Words you missed: {', '.join(sorted(missed_words))}")
-       
+            print(f"Words you missed: {", ".join(sorted(missed_words))}")
 
 
-def input_validation(guess, word_list, guessed_words):
+def input_validation(guess, game_list):
     """
     Validates a players guess in a word hunt game 
 
     Parameters:
         guess(str): The word guessed by the user 
         word_list(set): The set of valid words for the current topic ot round.
-        guessed_words(set): The set of words th= game has already guessed 
+        correct_words(set): The set of words th= game has already guessed 
 
     Returns: 
         tuple: (is_valid, message)[].
         is_valid (bool): True is the guess is valid and new, False otherwise. 
         message(str): Explanation of the result
     """
+    correct_words = []
 
     if not isinstance(guess, str) or not guess.strip():
         return False, "Invalid input. Please enter a word,"
 
     normalized_guess = guess.strip().lower()
 
-    if normalized_guess in guessed_words:
+    if normalized_guess in correct_words:
         return False, f"You already guessed' '{normalized_guess}'. Try a new word."
 
-    if normalized_guess not in word_list:
+    if normalized_guess not in game_list:
         return False, f"'{normalized_guess}' is not a valid word for this round."
 
-    guessed_words.add(normalized_guess)
+    correct_words.append(normalized_guess)
 
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
@@ -370,36 +372,37 @@ def main():
     name = game.set_player_name()
     topic = game.Topic()
     game.countdown()
-    
+
     display = Grid()
     display.place_words(game.word)
     display.fill_random()
     display.display()
     print("Type 'done' to quit")
-    
-    game_list = set(w.lower() for w in game.word)
 
+    game_list = set(w.lower() for w in game.word)
     input_list = set()
-    
     while True:
-        if game_list != input_list:
-            guess = input("Guess: ").strip().lower()
-            
+        guess = input("Guess: ").strip().lower()
+
         if guess == "done":
-            print ("Well Done")
-            break 
-    
-        is_valid, message = input_validation (guess, game_list, input_list)
+            print("Well Done")
+            break
+
+        is_valid, message = input_validation(
+            guess, game_list)
         print(message)
-    
-        if is_valid: 
+
+        if is_valid:
             input_list.add(guess)
-        
+            game.correct_words.add(guess)
+            game.update_score(guess)
+
         if input_list == game_list:
             print("\nYou found ALL the words!")
             break
-    game.endgame()
-        
+
+    game.endgame(input_list)
+
 
 if __name__ == "__main__":
     main()
