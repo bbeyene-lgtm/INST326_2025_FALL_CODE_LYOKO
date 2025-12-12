@@ -263,7 +263,7 @@ class GameState:
             num_words[topic], len(topicdict[topic])))
         return topic
     
-    def calculate_score(self, word_found):
+    def score(self, word_found):
         """
         Calculate and add points based on word length and difficulty.
         
@@ -274,7 +274,6 @@ class GameState:
         """
         base_points = len(word_found) * 10
         
-        # CHANGED: Difficulty multipliers match the unified topic/difficulty system
         # Sports (easy) = 1.0x, Animals (medium) = 1.5x, Plants (hard) = 2.0x
         diffmult = {
             "easy": 1.0,
@@ -453,11 +452,15 @@ def main():
         is_valid, message = input_validation (guess, game_list, input_list)
         print(message)
         
-        if is_valid:
-            game
-    
-    if is_valid: 
-        input_list.add(guess)
+        if is_valid: 
+            input_list.add(guess)
+            
+        if len(game.guessed_words) == len(game.word):
+            print("CONGRATULATIONS! You found all the words!")
+            break
+        
+    game.endgame()
+
     
 
 if __name__ == "__main__":
