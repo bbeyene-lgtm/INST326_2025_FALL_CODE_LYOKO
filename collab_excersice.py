@@ -262,7 +262,61 @@ class GameState:
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
-
+    
+    def calculate_score(self, word_found):
+        """
+        Calculate and add points based on word length and difficulty.
+        
+        INTEGRATION: Call this whenever input_validation() returns True in the game loop
+        
+        Args:
+            word_found(str): The word that was found
+        """
+        base_points = len(word_found) * 10
+        
+        # CHANGED: Difficulty multipliers match the unified topic/difficulty system
+        # Sports (easy) = 1.0x, Animals (medium) = 1.5x, Plants (hard) = 2.0x
+        diffmult = {
+            "easy": 1.0,
+            "medium": 1.5,
+            "hard": 2.0
+        }
+        
+        points = int(base_points * diffmult.get(self.difficulty, 1.0))
+        self.score += points
+        print(f" {points} points! Total score: {self.score}")
+    
+    def endgame(self):
+        """
+        This function will end the game and display the stats of the player.
+        Will display topic, difficulty, words found, score and time taken to complete..
+        
+        attributes:
+            self.end_time(self): The time when the game ends
+        Side Effects:
+            Prints the game statistics to the console.
+        """
+        self.end_time = time.time()
+        totaltime = self.end_time - self.start_time
+        
+    
+        print(f"Game Over, {self.player_name}!")
+        print(f"Topic: {self.topic}")
+        print(f"Difficulty: {self.difficulty}")
+        print(f"Words found: {len(self.guessed_words)}/{len(self.word)}")
+        print(f"Score: {self.score}")
+        print(f"Time taken: {totaltime:.2f} seconds")
+        
+        #used to to show which words were found
+        if self.guessed_words:
+            print(f"\nWords you found: {', '.join(sorted(self.guessed_words))}")
+            
+        # Show words that were missed
+        missed_words = set([w.lower() for w in self.word]) - self.guessed_words
+        if missed_words:
+            print(f"Words you missed: {', '.join(sorted(missed_words))}")
+        print("Thank you for playing Word Hunt!")
+    
     def countdown(self):
         """
         This function acts as both a countdown before the User can input their 
@@ -392,12 +446,15 @@ def main():
         if game_list != input_list:
             guess = input("Guess: ").strip().lower()
             
-        if guess == "done":
+        if guess.upper() == "DONE":
             print ("Well Done")
             break 
-    
-    is_valid, message = input_validation (guess, game_list, input_list)
-    print(message)
+        
+        is_valid, message = input_validation (guess, game_list, input_list)
+        print(message)
+        
+        if is_valid:
+            game
     
     if is_valid: 
         input_list.add(guess)
