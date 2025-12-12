@@ -204,7 +204,7 @@ class GameState:
         score(int): The player's current score.
         """
 
-    def __init__(self, topic, difficulty, word, score=0):
+    def __init__(self, topic = None, difficulty = None, word = None, score=0):
         self.topic = topic
         self.difficulty = difficulty
         self.word = []
