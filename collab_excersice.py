@@ -228,7 +228,7 @@ class GameState:
 
         # going to do the random subset of words for the topic that they pick
         # number of words depending on topic
-        num_words = {"plants": 5, "animals": 4, "sports": 3}
+        num_words = {"plants": 6, "animals": 5, "sports": 4}
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
@@ -275,7 +275,7 @@ class GameState:
                 time.sleep(1)
                 count_down -= 1
             print("Start!")
-    def end_game(self):
+    def endgame(self):
         """
         End the game and display final statistics including player name, 
         topic, difficulty, words found, score, and time taken.
@@ -392,7 +392,7 @@ def main():
         if input_list == game_list:
             print("\nYou found ALL the words!")
             break
-    
+    game.endgame()
         
 
 if __name__ == "__main__":
