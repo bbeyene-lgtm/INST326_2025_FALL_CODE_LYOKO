@@ -5,15 +5,15 @@ import argparse
 import time
 
 
-plants = [word for word in ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
+plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
           "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
           "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
           "bamboo", "succulents", "aloe vera", "sage", "thyme", "rosemary", "basil", "mint", "oregano",
           "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
-          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"] if len(word) <= 10]
+          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"]
 
-animals = [word for word in ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
+animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
            "wolf", "fox", "deer", "rabbit", "squirrel", "monkey", "gorilla", "chimpanzee",
            "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
            "snake", "lizard", "tortoise", "frog", "toad", "salmon", "trout", "shark",
@@ -23,9 +23,10 @@ animals = [word for word in ["lion", "tiger", "elephant", "giraffe", "zebra", "k
            "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
            "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
-           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"] if len(word) <= 10]
+           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
 
-sports = [word for word in ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
+
+sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "rugby", "hockey", "volleyball", "badminton", "table tennis", "swimming",
           "cycling", "running", "boxing", "wrestling", "skiing", "snowboarding", "skateboarding",
           "surfing", "sailing", "rowing", "fishing", "archery", "fencing", "gymnastics",
@@ -33,7 +34,7 @@ sports = [word for word in ["soccer", "basketball", "baseball", "tennis", "golf"
           "karate", "judo", "taekwondo", "kickboxing", "mixed martial arts", "triathlon",
           "marathon", "ultramarathon", "hiking", "climbing", "caving", "orienteering",
           "parkour", "bouldering", "curling", "luge", "skeleton", "bobsledding",
-          "handball", "water polo", "synchronized swimming", "diving", "triathlon"] if len(word) <= 10]
+          "handball", "water polo", "synchronized swimming", "diving", "triathlon",]
 
 topicdict = {
     "plants": plants,
@@ -44,7 +45,8 @@ topicdict = {
 alphabetlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-
+# the lcd function will be worked out, this is just a draft of something that I
+# think could work, but might be scrapped later on if we find a better way to do it
 
 
 class Grid:
@@ -148,7 +150,6 @@ class Grid:
             for c in range(self.columns):
                 if self.grid[r][c] == '':
                     self.grid[r][c] = random.choice(alphabet)
-       
 
     def display(self):
         """
@@ -160,50 +161,19 @@ class Grid:
             print()
 
 
-
-
-def input_validation(guess, word_list, guessed_words):
-    """
-    Validates a players guess in a word hunt game 
-
-    Parameters:
-        guess(str): The word guessed by the user 
-        word_list(set): The set of valid words for the current topic ot round.
-        guessed_words(set): The set of words the player has already guessed 
-
-    Returns: 
-        tuple: (is_valid, message)[].
-        is_valid (bool): True is the guess is valid and new, False otherwise. 
-        message(str): Explanation of the result
-    """
-
-    if not isinstance(guess, str) or not guess.strip():
-        return False, "Invalid input. Please enter a word,"
-
-    normalized_guess = guess.strip().lower()
-
-    if normalized_guess in guessed_words:
-        return False, f"You already guessed' '{normalized_guess}'. Try a new word."
-
-    if normalized_guess not in word_list:
-        return False, f"'{normalized_guess}' is not a valid word for this round."
-
-    guessed_words.add(normalized_guess)
-
-    return True, f"Good job! '{normalized_guess}' is a valid word."
-
 class GameState:
-    
     """
     Represents the state of a Word Hunt game.
     Args: 
         topic(str): The chosen topic for the game.
         difficulty(str): The chosen difficulty level for the game.
-        guessed_words(set): A set of words that the player has already guessed.
+        words(str): The word to be guessed in the game.
+        score(int): Th= game's current score.
     Attributes:
-
-        score(int): The player's current score.
+        guessed_words(set): A set of words that th= game has already guessed.
+        player_name(str): The name of th= game.
         """
+
     def __init__(self, topic=None, difficulty=None, word=None, score=0):
         self.player_name = None  # game name to be added later
         self.topic = topic
@@ -262,60 +232,7 @@ class GameState:
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
-    
-    def score(self, word_found):
-        """
-        Calculate and add points based on word length and difficulty.
-        
-        INTEGRATION: Call this whenever input_validation() returns True in the game loop
-        
-        Args:
-            word_found(str): The word that was found
-        """
-        base_points = len(word_found) * 10
-        
-        # Sports (easy) = 1.0x, Animals (medium) = 1.5x, Plants (hard) = 2.0x
-        diffmult = {
-            "easy": 1.0,
-            "medium": 1.5,
-            "hard": 2.0
-        }
-        
-        points = int(base_points * diffmult.get(self.difficulty, 1.0))
-        self.score += points
-        print(f" {points} points! Total score: {self.score}")
-    
-    def endgame(self):
-        """
-        This function will end the game and display the stats of the player.
-        Will display topic, difficulty, words found, score and time taken to complete..
-        
-        attributes:
-            self.end_time(self): The time when the game ends
-        Side Effects:
-            Prints the game statistics to the console.
-        """
-        self.end_time = time.time()
-        totaltime = self.end_time - self.start_time
-        
-    
-        print(f"Game Over, {self.player_name}!")
-        print(f"Topic: {self.topic}")
-        print(f"Difficulty: {self.difficulty}")
-        print(f"Words found: {len(self.guessed_words)}/{len(self.word)}")
-        print(f"Score: {self.score}")
-        print(f"Time taken: {totaltime:.2f} seconds")
-        
-        #used to to show which words were found
-        if self.guessed_words:
-            print(f"\nWords you found: {', '.join(sorted(self.guessed_words))}")
-            
-        # Show words that were missed
-        missed_words = set([w.lower() for w in self.word]) - self.guessed_words
-        if missed_words:
-            print(f"Words you missed: {', '.join(sorted(missed_words))}")
-        print("Thank you for playing Word Hunt!")
-    
+
     def countdown(self):
         """
         This function acts as both a countdown before the User can input their 
@@ -343,34 +260,6 @@ class GameState:
                 time.sleep(1)
                 count_down -= 1
             print("Start!")
-
-def timer(self, difficulty):
-    """
-        This function acts as both a countdown before the User can input their 
-        guess, and to count how long it takes them to answer the theme word 
-        hunt. depending on time this will be affect their total score. 
-
-    Args:
-        choice (str): choice for the theme(difficulty) they choose in the game
-
-    Returns:
-        bonus (INT): returns the score with bonus (depending on difficulty).
-        time (INT): returns the time in secconds, how long it took to answer. 
-    """
-    while True:
-        print("Are You Ready? (Y/N)")
-        answer = input(">> ")
-        if answer.upper() == "Y":
-            break
-    start = True
-
-    if start is True:
-        count_down = 3
-        while count_down > 0:
-            print(f"Count down from {count_down}")
-            time.sleep(1)
-            count_down -= 1
-        print("Start!")
 
 
 def input_validation(guess, word_list, guessed_words):
@@ -404,7 +293,7 @@ def input_validation(guess, word_list, guessed_words):
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
 
-def timer():
+def timer(guess):
     """
         This function acts as both a countdown before the User can input their 
         guess, and to count how long it takes them to answer the theme word 
@@ -420,10 +309,11 @@ def timer():
 
     time_start = time.time()
     while True:
-        if input_user.upper() == "DONE":
+        if guess.upper() == "END":
             break
     time_end = time.time()
     total_time = time_end - time_start
+    return total_time
 
 
 def main():
@@ -432,10 +322,12 @@ def main():
     name = game.set_player_name()
     topic = game.Topic()
     game.countdown()
-    display = Grid(rows=10, columns=10)
+    
+    display = Grid()
     display.place_words(game.word)
     display.fill_random()
     display.display()
+    print("Type 'done' to quit")
     
     game_list = set(w.lower() for w in game.word)
 
@@ -445,22 +337,15 @@ def main():
         if game_list != input_list:
             guess = input("Guess: ").strip().lower()
             
-        if guess.upper() == "DONE":
+        if guess == "done":
             print ("Well Done")
             break 
-        
-        is_valid, message = input_validation (guess, game_list, input_list)
-        print(message)
-        
-        if is_valid: 
-            input_list.add(guess)
-            
-        if len(game.guessed_words) == len(game.word):
-            print("CONGRATULATIONS! You found all the words!")
-            break
-        
-    game.endgame()
-
+    
+    is_valid, message = input_validation (guess, game_list, input_list)
+    print(message)
+    
+    if is_valid: 
+        input_list.add(guess)
     
 
 if __name__ == "__main__":
