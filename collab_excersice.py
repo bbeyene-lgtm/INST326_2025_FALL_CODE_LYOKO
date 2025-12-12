@@ -341,12 +341,16 @@ def main():
             print ("Well Done")
             break 
     
-    is_valid, message = input_validation (guess, game_list, input_list)
-    print(message)
+        is_valid, message = input_validation (guess, game_list, input_list)
+        print(message)
     
-    if is_valid: 
-        input_list.add(guess)
-    
+        if is_valid: 
+            input_list.add(guess)
+        
+        if input_list == game_list:
+            print("\nYou found ALL the words!")
+            break
+        
 
 if __name__ == "__main__":
     main()
