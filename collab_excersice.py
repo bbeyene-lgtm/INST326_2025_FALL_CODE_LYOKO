@@ -232,6 +232,21 @@ class GameState:
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
+    def score(self, word_found):
+        """
+        Calculates the score based on the word length and difficulty.
+        Args:
+            word_found (str): The word that was found by the player.
+        Side Effects:
+            Updates the game's score based on the word length and difficulty.
+
+        """
+        basepoints = len(word_found) * 10
+        diffmult = {"easy": 1, "medium": 1.5, "hard": 2.0}
+        
+        points = int(basepoints * diffmult[self.difficulty])
+        self.score += points
+        print(f"+{points} points! Score is now {self.score}")
 
     def countdown(self):
         """
@@ -260,6 +275,33 @@ class GameState:
                 time.sleep(1)
                 count_down -= 1
             print("Start!")
+    def end_game(self):
+        """
+        End the game and display final statistics including player name, 
+        topic, difficulty, words found, score, and time taken.
+        
+        INTEGRATION: Call this when player types "DONE" or all words are found
+        """
+        self.end_time = time.time()
+        total_time = self.end_time - self.start_time
+        
+        print("GAME OVER!")
+        print(f"Player: {self.player_name}")
+        print(f"Topic: {self.topic.upper()}")
+        print(f"Difficulty: {self.difficulty.upper()}")
+        print(f"Words found: {len(self.guessed_words)}/{len(self.word)}")
+        print(f"Final score: {self.score}")
+        print(f"Time taken: {total_time:.2f} seconds")
+        
+        # Show which words were found
+        if self.guessed_words:
+            print(f"\nWords you found: {', '.join(sorted(self.guessed_words))}")
+        
+        # Show words that were missed
+        missed_words = set([w.lower() for w in self.word]) - self.guessed_words
+        if missed_words:
+            print(f"Words you missed: {', '.join(sorted(missed_words))}")
+        print("="*50)
 
 
 def input_validation(guess, word_list, guessed_words):
