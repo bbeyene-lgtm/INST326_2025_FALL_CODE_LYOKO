@@ -278,17 +278,16 @@ class GameState:
     def endgame(self):
         """
         End the game and display final statistics including player name, 
-        topic, difficulty, words found, score, and time taken.
+        topic, words found, score, and time taken.
         
         INTEGRATION: Call this when player types "DONE" or all words are found
         """
         self.end_time = time.time()
-        total_time = self.end_time - self.start_time
+        total_time = self.end_time
         
         print("GAME OVER!")
         print(f"Player: {self.player_name}")
         print(f"Topic: {self.topic.upper()}")
-        print(f"Difficulty: {self.difficulty.upper()}")
         print(f"Words found: {len(self.guessed_words)}/{len(self.word)}")
         print(f"Final score: {self.score}")
         print(f"Time taken: {total_time:.2f} seconds")
