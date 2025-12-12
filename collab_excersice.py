@@ -5,15 +5,16 @@ import argparse
 import time
 
 
-plants = ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
+
+plants = [word for word in ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
           "orchids", "daffodils", "irises", "marigolds", "lavender", "jasmine", "peonies",
           "begonias", "chrysanthemums", "hydrangeas", "azaleas", "camellias", "gardenias", "grasses",
           "bamboo", "succulents", "aloe vera", "sage", "thyme", "rosemary", "basil", "mint", "oregano",
           "cilantro", "parsley", "dill", "fennel", "chives", "lemongrass", "tarragon", "bay leaves",
-          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"]
+          "coriander", "lavender", "echinacea", "ginseng", "chamomile", "valerian"] if len(word) <= 10]
 
-animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
+animals = [word for word in ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda", "bear",
            "wolf", "fox", "deer", "rabbit", "squirrel", "monkey", "gorilla", "chimpanzee",
            "leopard", "cheetah", "hyena", "rhinoceros", "hippopotamus", "crocodile", "alligator",
            "snake", "lizard", "tortoise", "frog", "toad", "salmon", "trout", "shark",
@@ -23,10 +24,9 @@ animals = ["lion", "tiger", "elephant", "giraffe", "zebra", "kangaroo", "panda",
            "chicken", "rooster", "ostrich", "emu", "platypus", "armadillo", "sloth", "anteater",
            "rabbit", "hamster", "guinea pig", "ferret", "chinchilla", "hedgehog", "meerkat",
            "wombat", "koala", "tasmanian devil", "mole", "vole", "lemming", "weasel", "badger",
-           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"]
+           "snake", "gecko", "iguana", "chameleon", "komodo dragon", "newt", "salamander"] if len(word) <= 10]
 
-
-sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
+sports = [word for word in ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "rugby", "hockey", "volleyball", "badminton", "table tennis", "swimming",
           "cycling", "running", "boxing", "wrestling", "skiing", "snowboarding", "skateboarding",
           "surfing", "sailing", "rowing", "fishing", "archery", "fencing", "gymnastics",
@@ -34,7 +34,8 @@ sports = ["soccer", "basketball", "baseball", "tennis", "golf", "cricket",
           "karate", "judo", "taekwondo", "kickboxing", "mixed martial arts", "triathlon",
           "marathon", "ultramarathon", "hiking", "climbing", "caving", "orienteering",
           "parkour", "bouldering", "curling", "luge", "skeleton", "bobsledding",
-          "handball", "water polo", "synchronized swimming", "diving", "triathlon",]
+          "handball", "water polo", "synchronized swimming", "diving", "triathlon"] if len(word) <= 10]
+
 
 topicdict = {
     "plants": plants,
@@ -232,7 +233,7 @@ class GameState:
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
-    def score(self, word_found):
+    def score(self, word):
         """
         Calculates the score based on the word length and difficulty.
         Args:
@@ -241,10 +242,16 @@ class GameState:
             Updates the game's score based on the word length and difficulty.
 
         """
-        basepoints = len(word_found) * 10
+        basepoints = len(word) * 10
         diffmult = {"easy": 1, "medium": 1.5, "hard": 2.0}
         
-        points = int(basepoints * diffmult[self.difficulty])
+        if self.topic == "sports":
+            hi = "easy"
+        elif self.topic == "animals":
+            hi = "medium"
+        elif self.topic == "plants":
+            hi = "hard"
+        points = int(basepoints * diffmult[hi])
         self.score += points
         print(f"+{points} points! Score is now {self.score}")
 
@@ -300,7 +307,7 @@ class GameState:
         missed_words = set([w.lower() for w in self.word]) - self.guessed_words
         if missed_words:
             print(f"Words you missed: {', '.join(sorted(missed_words))}")
-        print("="*50)
+       
 
 
 def input_validation(guess, word_list, guessed_words):
