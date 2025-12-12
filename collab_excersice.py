@@ -350,6 +350,7 @@ def main():
         if input_list == game_list:
             print("\nYou found ALL the words!")
             break
+    
         
 
 if __name__ == "__main__":
