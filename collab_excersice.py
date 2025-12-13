@@ -232,8 +232,12 @@ class GameState:
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
+<<<<<<< HEAD
+    def scores(self):
+=======
 
     def update_score(self, guess):
+>>>>>>> ce35d7d3afdf078bbb36443a95d66aefcb00c598
         """
         Calculates the score based on the word length and difficulty.
 
@@ -242,6 +246,20 @@ class GameState:
         Side Effects:
             Updates the game's score based on the word length and difficulty.
         """
+<<<<<<< HEAD
+        basepoints = len(self.word) * 10
+        diffmult = {"easy": 1, "medium": 1.5, "hard": 2.0}
+        
+        if self.topic == "sports":
+            diff = "easy"
+        elif self.topic == "animals":
+            diff = "medium"
+        elif self.topic == "plants":
+            diff = "hard"
+        points = int(basepoints * diffmult[diff])
+        self.score += points
+        print(f"+{points} points! Score is now {self.score}")
+=======
         if isinstance(guess, str):
             basepoints = 1000
             diffmult = {"easy": 1, "medium": 1.5, "hard": 2.0}
@@ -255,6 +273,7 @@ class GameState:
             points = int(basepoints * diffmult[hi])
             self.score += points
             print(f"+{points} points! Score is now {self.score}")
+>>>>>>> ce35d7d3afdf078bbb36443a95d66aefcb00c598
 
     def countdown(self):
         """
@@ -332,7 +351,15 @@ class GameState:
         INTEGRATION: 
             Call this when player types "DONE" or all words are found
         """
+<<<<<<< HEAD
+        
+        self.end_time = time.time()
+        
+        total_time = self.end_time 
+        
+=======
 
+>>>>>>> ce35d7d3afdf078bbb36443a95d66aefcb00c598
         print("GAME OVER!")
         print(f"\nPlayer: {self.player_name}")
         print(f"Topic: {self.topic.upper()}")
@@ -388,6 +415,12 @@ def input_validation(guess, game_list, correct_words):
     if normalized_guess not in game_list:
         return False, f"'{normalized_guess}' is not a valid word for this round."
 
+<<<<<<< HEAD
+    guessed_words.add(normalized_guess)
+    
+
+=======
+>>>>>>> ce35d7d3afdf078bbb36443a95d66aefcb00c598
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
 
