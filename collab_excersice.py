@@ -399,8 +399,11 @@ def load_highscores():
     Returns:
         highscores (file): loads the data from the highscore json file
     """
-    with open(HIGHSCORE_FILE, "r") as fin:
-        return json.load(fin)
+    try:
+        with open(HIGHSCORE_FILE, "r") as fin:
+            return json.load(fin)
+    except FileNotFoundError:
+        return []
 
 
 def save_highscores(highscores):
