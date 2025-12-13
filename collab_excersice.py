@@ -241,11 +241,11 @@ class GameState:
 >>>>>>> ce35d7d3afdf078bbb36443a95d66aefcb00c598
         """
         Calculates the score based on the word length and difficulty.
+        
         Args:
-            word_found (str): The word that was found by the player.
+            guess (str): The word that was found by the player.
         Side Effects:
             Updates the game's score based on the word length and difficulty.
-
         """
 <<<<<<< HEAD
         basepoints = len(self.word) * 10
@@ -278,17 +278,12 @@ class GameState:
 
     def countdown(self):
         """
-        This function acts as both a countdown before the User can input their
-        guess, and to count how long it takes them to answer the theme word
-        hunt. depending on time this will be affect their total score.
-
-    Args:
-        choice (str): choice for the theme(difficulty) they choose in the game
-
-    Returns:
-        return bonus (INT): returns the score with return bonus (depending on difficulty).
-        time (INT): returns the time in secconds, how long it took to answer.
-    """
+        This function acts as a countdown before the User can input their
+        guesses
+        
+        side effects:
+            prints a count down and then start
+        """
         while True:
             print("Are You Ready? (Y/N)")
             answer = input(">> ")
@@ -305,9 +300,23 @@ class GameState:
             print("Start!")
 
     def start_game_timer(self):
+        """
+        This method creates a starting point for the timer. 
+        
+        side effects:
+        starts timer for game.
+        """
         self.start_time = time.time()
 
     def game_timer(self):
+        """
+        This method creates and end point for the timer, calculates the total 
+        time and assigns a time bonus.
+        
+        Returns:
+            total_time (float): returns the amount of time has elapsed.
+            bonus (float): returns the time bonus value.
+        """
         if self.start_time is None:
             return 0, 1.0
 
@@ -331,8 +340,17 @@ class GameState:
         """
         End the game and display final statistics including player name, 
         topic, words found, score, and time taken.
-
-        INTEGRATION: Call this when player types "DONE" or all words are found
+        
+        Args:
+            input_list (str): set of correct words
+            bonus (float): bonus multiplier
+            total_time(float): elapsed time from game
+        
+        Side Effects:
+            prints out a summary of the game with metrics
+        
+        INTEGRATION: 
+            Call this when player types "DONE" or all words are found
         """
 <<<<<<< HEAD
         
@@ -401,6 +419,11 @@ def input_validation(guess, game_list, correct_words):
 
 
 def main():
+    """
+    This function is where the magic happens. This function runs the whole game
+    and collects information such as name, topic, and calculates various game 
+    statistics.
+    """
     print("welcome to Wordhunt!")
     game = GameState()
     name = game.set_player_name()
