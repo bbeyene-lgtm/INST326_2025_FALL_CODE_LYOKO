@@ -233,7 +233,7 @@ class GameState:
         self.word = random.sample(topicdict[topic], min(
             num_words[topic], len(topicdict[topic])))
         return topic
-    def score(self, word):
+    def scores(self):
         """
         Calculates the score based on the word length and difficulty.
         Args:
@@ -242,16 +242,16 @@ class GameState:
             Updates the game's score based on the word length and difficulty.
 
         """
-        basepoints = len(word) * 10
+        basepoints = len(self.word) * 10
         diffmult = {"easy": 1, "medium": 1.5, "hard": 2.0}
         
         if self.topic == "sports":
-            hi = "easy"
+            diff = "easy"
         elif self.topic == "animals":
-            hi = "medium"
+            diff = "medium"
         elif self.topic == "plants":
-            hi = "hard"
-        points = int(basepoints * diffmult[hi])
+            diff = "hard"
+        points = int(basepoints * diffmult[diff])
         self.score += points
         print(f"+{points} points! Score is now {self.score}")
 
@@ -289,8 +289,10 @@ class GameState:
         
         INTEGRATION: Call this when player types "DONE" or all words are found
         """
+        
         self.end_time = time.time()
-        total_time = self.end_time
+        
+        total_time = self.end_time 
         
         print("GAME OVER!")
         print(f"Player: {self.player_name}")
@@ -337,6 +339,7 @@ def input_validation(guess, word_list, guessed_words):
         return False, f"'{normalized_guess}' is not a valid word for this round."
 
     guessed_words.add(normalized_guess)
+    
 
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
