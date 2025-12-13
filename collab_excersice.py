@@ -164,7 +164,7 @@ class Grid:
 class GameState:
     """
     Represents the state of a Word Hunt game.
-    Args: 
+    Args:
         topic(str): The chosen topic for the game.
         difficulty(str): The chosen difficulty level for the game.
         words(str): The word to be guessed in the game.
@@ -181,6 +181,7 @@ class GameState:
         self.word = word
         self.correct_words = set()
         self.score = score
+        self.start_time = None
 
     def set_player_name(self):
         """
@@ -258,16 +259,16 @@ class GameState:
 
     def countdown(self):
         """
-        This function acts as both a countdown before the User can input their 
-        guess, and to count how long it takes them to answer the theme word 
-        hunt. depending on time this will be affect their total score. 
+        This function acts as both a countdown before the User can input their
+        guess, and to count how long it takes them to answer the theme word
+        hunt. depending on time this will be affect their total score.
 
     Args:
         choice (str): choice for the theme(difficulty) they choose in the game
 
     Returns:
-        bonus (INT): returns the score with bonus (depending on difficulty).
-        time (INT): returns the time in secconds, how long it took to answer. 
+        return bonus (INT): returns the score with return bonus (depending on difficulty).
+        time (INT): returns the time in secconds, how long it took to answer.
     """
         while True:
             print("Are You Ready? (Y/N)")
@@ -284,7 +285,30 @@ class GameState:
                 count_down -= 1
             print("Start!")
 
-    def endgame(self, input_list):
+    def start_game_timer(self):
+        self.start_time = time.time()
+
+    def game_timer(self):
+        if self.start_time is None:
+            return 0, 1.0
+
+        end_time = time.time()
+        total_time = end_time - self.start_time
+
+        if total_time < 10:
+            bonus = 2
+        elif total_time < 15:
+            bonus = 1.5
+        elif total_time < 30:
+            bonus = 1.25
+        elif total_time < 60:
+            bonus = 1
+        else:
+            bonus = 1
+
+        return total_time, bonus
+
+    def endgame(self, input_list, bonus, total_time):
         """
         End the game and display final statistics including player name, 
         topic, words found, score, and time taken.
@@ -293,15 +317,18 @@ class GameState:
         """
 
         print("GAME OVER!")
-        print(f"Player: {self.player_name}")
+        print(f"\nPlayer: {self.player_name}")
         print(f"Topic: {self.topic.upper()}")
         print(f"Words found: {len(input_list)}/{len(self.word)}")
-        print(f"Final score: {self.score}")
+        print(f"Time: {total_time:.1f} seconds")
+        print(f"Time Bonus: {bonus}x")
+        final_score = int(self.score * bonus)
+        print(f"Final score: {final_score} ")
 
         # Show which words were found
         if self.correct_words:
             print(
-                f"\nWords you found: {', '.join(sorted(self.correct_words))}")
+                f"Words you found: {', '.join(sorted(self.correct_words))}")
 
         # Show words that were missed
         set1 = set([w.lower() for w in self.word])
@@ -311,7 +338,7 @@ class GameState:
             print(f"Words you missed: {", ".join(sorted(missed_words))}")
 
 
-def input_validation(guess, game_list):
+def input_validation(guess, game_list, correct_words):
     """
     Validates a players guess in a word hunt game 
 
@@ -325,7 +352,6 @@ def input_validation(guess, game_list):
         is_valid (bool): True is the guess is valid and new, False otherwise. 
         message(str): Explanation of the result
     """
-    correct_words = []
 
     if not isinstance(guess, str) or not guess.strip():
         return False, "Invalid input. Please enter a word,"
@@ -338,40 +364,17 @@ def input_validation(guess, game_list):
     if normalized_guess not in game_list:
         return False, f"'{normalized_guess}' is not a valid word for this round."
 
-    correct_words.append(normalized_guess)
-
     return True, f"Good job! '{normalized_guess}' is a valid word."
 
 
-def timer(guess):
-    """
-        This function acts as both a countdown before the User can input their 
-        guess, and to count how long it takes them to answer the theme word 
-        hunt. depending on time this will be affect their total score. 
-
-    Args:
-        choice (str): choice for the theme(difficulty) they choose in the game
-
-    Returns:
-        bonus (INT): returns the score with bonus (depending on difficulty).
-        time (INT): returns the time in secconds, how long it took to answer. 
-    """
-
-    time_start = time.time()
-    while True:
-        if guess.upper() == "END":
-            break
-    time_end = time.time()
-    total_time = time_end - time_start
-    return total_time
-
-
 def main():
-
+    print("welcome to Wordhunt!")
     game = GameState()
     name = game.set_player_name()
     topic = game.Topic()
     game.countdown()
+
+    game.start_game_timer()
 
     display = Grid()
     display.place_words(game.word)
@@ -380,7 +383,7 @@ def main():
     print("Type 'done' to quit")
 
     game_list = set(w.lower() for w in game.word)
-    input_list = set()
+
     while True:
         guess = input("Guess: ").strip().lower()
 
@@ -389,19 +392,18 @@ def main():
             break
 
         is_valid, message = input_validation(
-            guess, game_list)
+            guess, game_list, game.correct_words)
         print(message)
 
         if is_valid:
-            input_list.add(guess)
             game.correct_words.add(guess)
             game.update_score(guess)
 
-        if input_list == game_list:
+        if game.correct_words == game_list:
             print("\nYou found ALL the words!")
             break
-
-    game.endgame(input_list)
+    total_time, bonus = game.game_timer()
+    game.endgame(game.correct_words, bonus, total_time)
 
 
 if __name__ == "__main__":
