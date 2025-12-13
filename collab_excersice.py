@@ -1,9 +1,8 @@
 import random
-from collections import Counter
-import sys
-import argparse
 import time
+import json
 
+HIGHSCORE_FILE = "highscores.json"
 
 plants = [word for word in ["trees", "flowers", "shrubs", "herbs", "tulips", "roses", "daisies", "bushes",
           "ferns", "mosses", "cacti", "vines", "grasses", "palms", "sunflowers", "lilies",
@@ -237,7 +236,7 @@ class GameState:
     def update_score(self, guess):
         """
         Calculates the score based on the word length and difficulty.
-        
+
         Args:
             guess (str): The word that was found by the player.
         Side Effects:
@@ -261,7 +260,7 @@ class GameState:
         """
         This function acts as a countdown before the User can input their
         guesses
-        
+
         side effects:
             prints a count down and then start
         """
@@ -283,7 +282,7 @@ class GameState:
     def start_game_timer(self):
         """
         This method creates a starting point for the timer. 
-        
+
         side effects:
         starts timer for game.
         """
@@ -293,7 +292,7 @@ class GameState:
         """
         This method creates and end point for the timer, calculates the total 
         time and assigns a time bonus.
-        
+
         Returns:
             total_time (float): returns the amount of time has elapsed.
             bonus (float): returns the time bonus value.
@@ -321,15 +320,15 @@ class GameState:
         """
         End the game and display final statistics including player name, 
         topic, words found, score, and time taken.
-        
+
         Args:
             input_list (str): set of correct words
             bonus (float): bonus multiplier
             total_time(float): elapsed time from game
-        
+
         Side Effects:
             prints out a summary of the game with metrics
-        
+
         INTEGRATION: 
             Call this when player types "DONE" or all words are found
         """
@@ -353,7 +352,14 @@ class GameState:
         set2 = self.correct_words
         missed_words = set1.difference(set2)
         if missed_words:
-            print(f"Words you missed: {", ".join(sorted(missed_words))}")
+            print(f"Words you missed: {', '.join(sorted(missed_words))}")
+
+        # add scores to highscore
+        add_highscores(self.player_name, final_score)
+
+        print("Loading Highscores...")
+        time.sleep(5)
+        show_highscores()
 
 
 def input_validation(guess, game_list, correct_words):
@@ -383,6 +389,69 @@ def input_validation(guess, game_list, correct_words):
         return False, f"'{normalized_guess}' is not a valid word for this round."
 
     return True, f"Good job! '{normalized_guess}' is a valid word."
+
+
+def load_highscores():
+    """
+    loads the current file of highscores to add_highscore() and 
+    show_highscores()
+
+    Returns:
+        highscores (file): loads the data from the highscore json file
+    """
+    with open(HIGHSCORE_FILE, "r") as fin:
+        return json.load(fin)
+
+
+def save_highscores(highscores):
+    """
+    Save the scores after the game in to the highscore json file.
+
+    Args:
+        highscores (str, int): name and score from the last game.
+
+    Side effect:
+        creates a Json File if there is not one present. 
+    """
+    with open(HIGHSCORE_FILE, "w") as fin:
+        json.dump(highscores, fin, indent=4)
+
+
+def add_highscores(name, score):
+    """
+    This method takes the name and score obtained from the game and sends it to 
+    save_highscore() to save them in the file 
+
+    Args:
+        name (_type_): _description_
+        score (_type_): _description_
+    """
+
+    highscores = load_highscores()
+
+    highscores.append({"name": name, "score": score})
+
+    highscores.sort(key=lambda x: x["score"], reverse=True)
+
+    highscores = highscores[:10]
+
+    save_highscores(highscores)
+
+
+def show_highscores():
+    """
+    This is the Display Function for the Highscores from the Game. 
+    """
+    highscores = load_highscores()
+
+    if not highscores:
+        print("No highscores yet!")
+        return
+
+    print("\n=== HIGHSCORES ===")
+    for i in range(len(highscores)):
+        entry = highscores[i]
+        print(f"{i+1}. {entry['name'].upper()} - {entry['score']}")
 
 
 def main():
